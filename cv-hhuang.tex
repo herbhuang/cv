@@ -1,0 +1,500 @@
+%!TeX program = pdflatex
+% Geoff Boeing's Curriculum Vitae
+% Email: boeing@usc.edu
+% Web: https://geoffboeing.com/
+% Repo: https://github.com/gboeing/cv
+
+\documentclass[11pt,letterpaper]{report}
+
+\usepackage[T1]{fontenc} % output T1 font encoding (8-bit) for accented characters as single glyph
+\usepackage[strict,autostyle]{csquotes} % smart and nestable quote marks
+\usepackage[USenglish]{babel} % regionalize hyphens, quote marks, etc automatically
+\usepackage{microtype}% improve text appearance with kerning, etc
+\usepackage{datetime} % enable formatting of date output
+\usepackage{tabto}    % make nice tabbing
+\usepackage{setspace} % custom line spacing
+\usepackage{hyperref} % enable hyperlinks and pdf metadata
+\usepackage{geometry} % manually set page margins
+\usepackage{enumitem} % enumerate with [resume] option
+\usepackage{titlesec} % allow custom section fonts
+
+% what is your name?
+\newcommand{\myname}{He (Herb) Hunag}
+
+% select default typefaces
+\usepackage{ebgaramond} % document's serif typeface
+\usepackage{tgheros}    % document's sans serif typeface
+
+% how far to tab for list items with left-aligned date: different fonts need different widths
+\newcommand{\listtabwidth}{1.7cm}
+
+% define font to use as document's title
+\newcommand{\namefont}[1]{{\normalfont\bfseries\Huge{#1}}}
+
+% set section heading fonts and before/after spacing
+\SetTracking{encoding=*, family=\sfdefault}{30} % increase sans serif headings tracking
+\titleformat{\section}{\lsstyle\sffamily\small\bfseries\uppercase}{}{}{}{}
+\titlespacing{\section}{0pt}{30pt plus 4pt minus 4pt}{8pt plus 2pt minus 2pt}
+
+% set subsection heading fonts and before/after spacing
+\titleformat{\subsection}{\lsstyle\sffamily\footnotesize\bfseries}{}{}{}{}
+\titlespacing{\subsection}{0pt}{16pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+
+% set page margins (assumes letter paper)
+\geometry{body={6.5in, 9.0in},
+    left=1.0in,
+    top=1.0in}
+
+% prevent paragraph indentation
+\setlength\parindent{0em}
+
+% set line spacing
+\setstretch{0.9}
+
+% define space between list items
+\newcommand{\listitemspace}{0.25em}
+
+% make unordered lists without bullets and use compact spacing
+\renewenvironment{itemize}
+{\begin{list}{}{\setlength{\leftmargin}{0em}
+                \setlength{\parskip}{0em}
+                \setlength{\itemsep}{\listitemspace}
+                \setlength{\parsep}{\listitemspace}}}
+{\end{list}}
+
+% make tabbed lists so content is left-aligned next to years
+\TabPositions{\listtabwidth}
+\newlist{tablist}{description}{3}
+\setlist[tablist]{leftmargin=\listtabwidth,
+    labelindent=0em,
+    topsep=0em,
+    partopsep=0em,
+    itemsep=\listitemspace,
+    parsep=\listitemspace,
+    font=\normalfont}
+
+% print only the month and year when using \today
+\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
+
+% define hyperlink appearance and metadata for pdf properties
+\hypersetup{
+    colorlinks  = true,
+    urlcolor    = black,
+    citecolor   = black,
+    linkcolor   = black,
+    pdfauthor   = {\myname},
+    pdfkeywords = {city planning, housing, street networks, transportation, urban design, urban informatics},
+    pdftitle    = {\myname: Curriculum Vitae},
+    pdfsubject  = {Curriculum Vitae},
+    pdfpagemode = UseNone
+}
+
+\begin{document}
+    \raggedright{}
+
+    % display your name as the document title
+    \namefont{\myname}
+
+    % affiliation and contact info blocks
+    \vspace{1em}
+    \begin{minipage}[t]{0.700\textwidth}
+        % current primary affiliation, left-aligned
+        Organizations, Strategy and International Management \\
+        Naveen Jindal School of Management \\
+        The University of Texas at Dallas
+    \end{minipage}
+    \begin{minipage}[t]{0.295\textwidth}
+        % contact info details, right-aligned
+        \flushright{}
+        \href{mailto:he.huang@utdallas.edu}{he.huang@utdallas.edu} \\
+        +1 469 996 8112 \\
+        \href{https://orcid.org/0000-0001-5915-5988}{ocrid}
+    \end{minipage}
+
+
+    \section*{Education}
+
+    \begin{tablist}
+
+        \item[Ph.D.] \tab{}Organizational Behavior, The University of Texas at Dallas, 2021-present
+        \item[B.S.]  \tab{}Human Resource Management, Wuhan University, 2020
+
+    \end{tablist}
+
+
+
+    % \section*{Appointments}
+
+    % \begin{tablist}
+
+    %     \item[2019--]   \tab{}University of Southern California \\
+    %                           Assistant Professor, Department of Urban Planning and Spatial Analysis, 2019-- \\
+    %                           Faculty Affiliate, Spatial Sciences Institute, 2021--
+
+    %     \item[2021--]   \tab{}Brookings Institution \\
+    %                           Nonresident Senior Fellow, Metropolitan Policy Program \\
+
+    %     \item[2018--19] \tab{}Northeastern University \\
+    %                           Assistant Professor, School of Public Policy and Urban Affairs \\
+    %                           Faculty Affiliate, Network Science Institute \\
+    %                           Faculty Affiliate, Global Resilience Institute
+
+    %     \item[2017--18] \tab{}University of California, Berkeley \\
+    %                           Postdoctoral Researcher, Department of City and Regional Planning
+
+    % \end{tablist}
+
+
+
+    \section*{Research Areas}
+
+    \begin{itemize}
+
+        \item Mobility: job mobility, team dynamics, turnover
+        \item Organizational cognition: motivation, perception, attribution, appraisal
+        \item Interpersonal processes: social judgement, coworker relationships, LMX 
+
+    \end{itemize}
+
+
+
+    \section*{Publications}
+
+    \subsection*{Journal Articles}
+
+    \begin{tablist}
+
+        \item[2022] \tab{}Hu, L., Jiang, N., \textbf{Huang, H.}, & Liu, Y. \enquote{Perceived competence overrides gender bias: Gender roles, affective trust and leader effectiveness.} \textit{Leadership & Organization Development Journal}, 43(5): 719--733. \href{https://doi.org/10.1108/LODJ-06-2021-0312}{doi:10.1108/LODJ-06-2021-0312}
+
+    \end{tablist}
+
+
+
+    % \subsection*{Book Chapters}
+
+    % \begin{tablist}
+
+    %     \item[2022] \tab{}G. Boeing, M. Batty, S. Jiang, and L. Schweitzer. \enquote{Urban Analytics: History, Trajectory, and Critique.} In: \textit{Handbook of Spatial Analysis in the Social Sciences} (pp. 503--516), edited by S. Rey and R. Franklin. Cheltenham, England:\ Edward Elgar. \href{https://doi.org/10.4337/9781789903942.00039}{doi:10.4337/9781789903942.00039}
+
+    % \end{tablist}
+
+
+
+    \subsection*{Conference Proceedings}
+
+    \begin{tablist}
+
+        \item[2021] \tab{}Hu, L., Jiang, N., & \textbf{Huang, H.} \enquote{Competence-bonus Effects for Female Leaders: Gender Roles, Affective Trust and Leader Effectiveness.} \textit{Academy of Management Proceedings} 11294. A Virtual Experience.
+
+        \item[2021] \tab{}Liu, Y., \textbf{Huang, H.}, Jiang, N., & Li, Y. \enquote{ A Theory of Attribution Profiles and Employee (Dis)trust Reactions to Supervisor Justice Enactment.} \textit{Academy of Management Proceedings} 13078. A Virtual Experience.
+
+        % \item[2021] \tab{}C. Higgs, A. Alderton, J. Rozek, D. Adlakha, H. Badland, G. Boeing, A. Both, E. Cerin, M. Chandrabose, C. De Gruyter, L. Gunn, A. De Livera, E. Hinckson, S. Liu, S. Mavoa, J. Sallis, K. Simons, and B. Giles-Corti. \enquote{Calculation of Policy-Relevant Spatial Indicators of Urban Liveability: Experiences of Scaling a Research Programme from Local to Global.} \textit{10\textsuperscript{th} State of Australasian Cities Conference}. Melbourne, Australia: APO.\@ \href{https://doi.org/10.25916/jbnk-hp52}{doi:10.25916/jbnk-hp52}
+
+    \end{tablist}
+
+
+    \subsection*{Under-reviews and On-goings}
+
+    \begin{tablist}
+
+        \item[2024] \tab{} D. Adlakha, E. Resendiz, A.~V. Moudon, J. Sallis, C. Higgs, B. Giles-Corti, D. Salvo, E. Cerin, G. Boeing, S. Liu, and M. Lowe. \enquote{El Observatorio Global de Ciudades Saludables y Sostenibles.} \textit{Notas CPAU} 55, 2738. \href{https://bit.ly/3Xv8JOW}{https://bit.ly/3Xv8JOW}
+
+
+    \end{tablist}
+
+
+
+    % \subsection*{Edited Articles and Reviews}
+
+    % \begin{tablist}
+
+    %     \item[2024] \tab{} D. Adlakha, E. Resendiz, A.~V. Moudon, J. Sallis, C. Higgs, B. Giles-Corti, D. Salvo, E. Cerin, G. Boeing, S. Liu, and M. Lowe. \enquote{El Observatorio Global de Ciudades Saludables y Sostenibles.} \textit{Notas CPAU} 55, 2738. \href{https://bit.ly/3Xv8JOW}{https://bit.ly/3Xv8JOW}
+
+
+    % \end{tablist}
+
+
+
+    % \subsection*{Reports and Other Publications}
+
+    % \begin{tablist}
+
+    %     \item[2023] \tab{}R. Sanchez-Moyano, G. Boeing, and J.~G. Harten. \enquote{The Promises and Pitfalls of Housing Search Digitalization.} Federal Reserve Bank of San Francisco. Jun 28. \href{https://bit.ly/43dlGwo}{https://bit.ly/43dlGwo}
+
+    % \end{tablist}
+
+
+
+    % \subsection*{Patents}
+
+    % \begin{tablist}
+
+    %     \item[2014] \tab{}A.~E. Beck, G. Boeing, and D. Shannon. \textit{Systems and Methods for Analyzing Requirements}. United States patent US8650186B2, European patent EP2413256, Australian patent AU2011204935, Canadian patent CA2747481, Chinese patent CN102346763.
+
+
+    % \end{tablist}
+
+
+
+    % \section*{Invited Talks}
+
+    % \begin{tablist}
+
+    %     \item[2025] \tab{}\enquote{Democratizing Access to Open Data.} OECD Laboratory for Geospatial Analysis. Paris, France. Jan 24.
+
+    %     \item[2024] \tab{}\enquote{Generalizing and Localizing the Science of Urban Networks.} NYU Center for Urban Science and Progress. Brooklyn, New York. Oct 28.
+
+    % \end{tablist}
+
+
+
+    % \subsection*{Invited Symposium Talks}
+
+    % \begin{tablist}
+
+    % \item[2023] \tab{}\enquote{Spatial Analytics to Benchmark and Monitor Healthy and Sustainable Cities.} Exploring the Research Opportunities from the Intersection of Advancing Planetary Health and Cardiovascular Disease: Improving Human Health. Hosted by the U.S. National Institutes of Health. Virtual. Dec 14--15.
+
+    % \end{tablist}
+
+    \subsection*{Campus Talks}
+
+    \begin{tablist}
+
+        %\item[2023] \tab{}\enquote{Generalizability in Urban Science.} USC Price School Faculty Seminar Series. Los Angeles, California. Nov 14.
+
+        \item[2023] \tab{}\enquote{How do ambivalent leaders influence employee engagement?} UTDallas PhD Student Poster Competition and Art Showcase. Richardson, TX. Oct 25.
+
+    \end{tablist}
+
+
+
+    % \section*{Conference Activity}
+
+    % \subsection*{Keynote and Plenary Addresses}
+
+    % \begin{tablist}
+
+    %     \item[2024] \tab{}\enquote{The Design of American Streets.} Keynote address. Induction ceremony of the Nu Theta chapter of Gamma Theta Upsilon, the international geographical honor society. Los Angeles, California. Apr 23.
+
+    % \end{tablist}
+
+    % \subsection*{Sessions Organized}
+
+    % \begin{tablist}
+
+    %     \item[2017] \tab{}\enquote{Emerging Computational Methods in Urban Design.} Association of Collegiate Schools of Planning Annual Conference. Denver, Colorado. Oct 12--15.
+
+    % \end{tablist}
+
+    % \subsection*{Sessions Chaired/Moderated}
+
+    % \begin{tablist}
+
+    %     \item[2021] \tab{}\enquote{Big Data and Machine Learning for Urban Mobility.} Association of Collegiate Schools of Planning Annual Conference. Virtual. Oct 21--23.
+
+
+    % \end{tablist}
+
+    % \subsection*{Invited Panelist}
+
+    % \begin{tablist}
+
+    %     \item[2022] \tab{}\enquote{Teaching Data Science in Urban Planning.} Panelist with Marta Gonz{\'a}lez, Sarah Williams, and Anthony Vanky; chaired by Adam Millard-Ball. Association of Collegiate Schools of Planning Annual Conference. Toronto, Canada. Nov 3--6.
+
+
+    % \end{tablist}
+
+    % \subsection*{Conference Papers Presented\footnote{Presenting author \textit{italicized} if other than first author.}}
+
+    % \begin{tablist}
+
+    %     \item[2025] \tab{}J.~G. Harten and G. Boeing. \enquote{Sharing Domesticity: What Can Online Rental Listing Texts Reveal about Homemaking Among Strangers?} International Sociological Association Forum. Rabat, Morocco. Jul 6--11.
+
+    % \end{tablist}
+
+
+
+    % \section*{Grants and Awards}
+
+    % \subsection*{Awards and Honors}
+
+    % \begin{tablist}
+
+    %     \item[2025] \tab{}Zephyr Foundation Exceptional Technical Achievement Award
+    %     \item[2024] \tab{}USC Price High Impact Research Award
+
+    % \end{tablist}
+
+    % \subsection*{Competitive Grants and Fellowships}
+
+    % \begin{tablist}
+
+    %     %\item[2024--26] \tab{}Mobility Equity Research Initiative: Reducing Accessibility Gaps for the Most Disadvantaged (\$2,970,000). U.S. Department of Transportation research grant. Co-I.\@
+
+    % \end{tablist}
+
+
+
+    \section*{Courses Taught}
+
+    \subsection*{The University of Texas at Dallas}
+
+    \begin{itemize}
+
+        \item[2024 Fall] \tab{}Introduction to Organizational Behavior
+        \item[2024 Spring] \tab{}Introduction to Organizational Behavior
+        
+
+    \end{itemize}
+
+
+    \section*{Service}
+
+   \subsection*{Board of Directors}
+
+   \begin{tablist}
+
+       \item[2023--2024]    \tab{}Jindal School of Management PhD Social Club
+
+   \end{tablist}
+
+    % \subsection*{Academic Journal Editorship}
+
+    % \begin{tablist}
+
+    %     \item[2020--]   \tab{}\textit{Urban Findings}, editorial board
+    %     \item[2021--24] \tab{}\textit{Urban Studies}, editorial board
+    %     \item[2021]     \tab{}\textit{PLOS One}, guest academic editor
+    %     \item[2013--14] \tab{}\textit{Berkeley Planning Journal}, book review editor
+
+    % \end{tablist}
+
+    % \subsection*{Service to the Field}
+
+    % \begin{tablist}
+
+    %     \item[2022--2025]   \tab{}Academy of Management Proceedings, reviewer
+    %     \item[2023]   \tab{}Leadership & Organization Development Journal, reviewer
+
+    % \end{tablist}
+
+    % \subsection*{Service to the University}
+
+    % \begin{tablist}
+    %     \item[2024--]   \tab{}USC Price Department of Urban Planning and Spatial Analysis hiring search committee
+    %     \item[2024--]   \tab{}USC Price research committee
+    %     \item[2024--25] \tab{}USC Price dean search committee
+    % \end{tablist}
+
+    % \subsection*{Doctoral Committees}
+
+    % \begin{itemize}
+
+    %     \item Robert Binder, USC Price, exam committee
+
+    % \end{itemize}
+
+    % \subsection*{Studio Review Jury}
+
+    % \begin{itemize}
+
+    % \item MIT, Workshop on Geographic Information Systems (Prof.\ Sarah Williams), Fall 2018
+
+    % \end{itemize}
+
+
+
+    \section*{Peer Review}
+
+    % \subsection*{Academic Journal Peer Review}
+
+    \begin{itemize}
+
+        \item \textit{Academy of Management Proceedings}
+
+        \item \textit{Leadership & Organization Development Journal}
+
+    \end{itemize}
+
+    % \subsection*{Academic Press Peer Review}
+
+    % \begin{itemize}
+
+    %     \item Cambridge University Press
+    %     \item Routledge
+    %     \item Springer Nature
+    %     \item Taylor \& Francis
+
+    % \end{itemize}
+
+    % \subsection*{Funding Agency Peer Review}
+
+    % \begin{itemize}
+
+    %     \item European Science Foundation
+    %     \item Israel Science Foundation
+    %     \item U.S. National Science Foundation
+    %     \item Research Grants Council of Hong Kong
+    %     \item Social Sciences and Humanities Research Council of Canada
+    %     \item United Arab Emirates University, Office of Associate Provost for Research
+
+    % \end{itemize}
+
+
+
+    \section*{Memberships}
+
+    \begin{itemize}
+
+        \item Academy of Management
+
+    \end{itemize}
+
+
+
+    % \section*{Credentials}
+
+    % \begin{itemize}
+
+    %     \item U.S. Department of Defense secret clearance
+    %     \item U.S. Department of Homeland Security public trust
+    %     \item Project Management Professional (PMP)
+
+    % \end{itemize}
+
+
+
+    % \section*{Consulting}
+
+    % \begin{tablist}
+
+    %     \item[2017--19] \tab{}The Public Good Projects, New York, New York
+    %     \item[2017--18] \tab{}Calthorpe Analytics, Berkeley, California
+    %     \item[2016--18] \tab{}UrbanSim Inc., Berkeley, California
+    %     \item[2013--15] \tab{}Avalon Health Economics, Morristown, New Jersey
+    %     \item[2013]     \tab{}Raimi \& Associates, Berkeley, California
+    %     \item[2010--11] \tab{}Voluntary Service Overseas, London, England
+
+    % \end{tablist}
+
+
+
+    % \section*{Professional Employment}
+
+    % \begin{tablist}
+
+    %     \item[2009--13] \tab{}Accenture, New York, New York; London, England; San Diego, California
+    %     \item[2007--09] \tab{}Permission Data, New York, New York
+    %     \item[2004--07] \tab{}Acumen Inc., Mesa, Arizona
+
+    % \end{tablist}
+
+
+
+    % display today's date as Month Year after a vertical space below the end of the text
+    \begin{center}
+        \vfill
+        Updated \monthyeardate\today
+    \end{center}
+
+\end{document}
