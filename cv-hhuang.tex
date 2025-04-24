@@ -4,20 +4,32 @@
 % Web: https://geoffboeing.com/
 % Repo: https://github.com/gboeing/cv
 
-\documentclass[11pt,letterpaper]{report}
+\RequirePackage[l2tabu,orthodox]{nag} % warn if using any obsolete commands
+\documentclass[11pt,letterpaper]{report} % document style
 
-\usepackage[T1]{fontenc} % output T1 font encoding (8-bit) for accented characters as single glyph
+
+% load encoding and font packages for pdflatex, in order
+\usepackage[T1]{fontenc}    % output 8-bit encoded fonts
+\usepackage[utf8]{inputenc} % allow input of utf-8 encoded characters
+\usepackage{ebgaramond}     % document's serif font
+\usepackage{tgheros}        % document's sans serif font
+
+% load babel, csquotes, and microtype in order
+\usepackage[USenglish]{babel} % auto-regionalize hyphens, quote marks, etc
 \usepackage[strict,autostyle]{csquotes} % smart and nestable quote marks
-\usepackage[USenglish]{babel} % regionalize hyphens, quote marks, etc automatically
-\usepackage{microtype}% improve text appearance with kerning, etc
+\usepackage[babel=true]{microtype} % enable micro-typographic adjustments
+
+% load everything else
 \usepackage{datetime} % enable formatting of date output
-\usepackage{tabto}    % make nice tabbing
-\usepackage{setspace} % custom line spacing
-\usepackage{hyperref} % enable hyperlinks and pdf metadata
-\usepackage{geometry} % manually set page margins
 \usepackage{enumitem} % enumerate with [resume] option
+\usepackage{geometry} % manually set page margins
+\usepackage{setspace} % custom line spacing
+\usepackage{tabto}    % make nice tabbing
 \usepackage{titlesec} % allow custom section fonts
 \usepackage[super]{nth} % use nth in text
+
+% load hyperref last for compatibility
+\usepackage{hyperref} % enable hyperlinks and pdf metadata
 
 % what is your name?
 \newcommand{\myname}{He (Herb) Hunag}
@@ -27,7 +39,7 @@
 \usepackage{biolinum}    % document's sans serif typeface
 
 % how far to tab for list items with left-aligned date: different fonts need different widths
-\newcommand{\listtabwidth}{1.7cm}
+\newcommand{\listtabwidth}{2cm}
 
 % define font to use as document's title
 \newcommand{\namefont}[1]{{\normalfont\bfseries\Huge{#1}}}
@@ -84,7 +96,7 @@
     citecolor   = black,
     linkcolor   = black,
     pdfauthor   = {\myname},
-    pdfkeywords = {city planning, housing, street networks, transportation, urban design, urban informatics},
+    pdfkeywords = {organizational behavior, human resource, management, employee mobility},
     pdftitle    = {\myname: Curriculum Vitae},
     pdfsubject  = {Curriculum Vitae},
     pdfpagemode = UseNone
