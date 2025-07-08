@@ -2,7 +2,7 @@ secrets.txt
 .DS_Store
 
 ## latex build file
-build/
+build/*
 
 ## Core latex/pdflatex auxiliary files:
 *.aux

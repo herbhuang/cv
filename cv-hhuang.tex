@@ -43,7 +43,7 @@
 \newcommand{\listtabwidth}{1.6cm}
 
 % define font to use as document's title
-\newcommand{\namefont}[1]{{\normalfont\bfseries\Huge{#1}}}
+\newcommand{\namefont}[1]{{\normalfont\bfseries\Large{#1}}}
 
 % set section heading fonts and before/after spacing
 \SetTracking{encoding=*, family=\sfdefault}{30} % increase sans serif headings tracking
@@ -52,7 +52,7 @@
 
 % set subsection heading fonts and before/after spacing
 \titleformat{\subsection}{\lsstyle\sffamily\footnotesize\bfseries}{}{}{}{}
-\titlespacing{\subsection}{0pt}{12pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+\titlespacing{\subsection}{0pt}{8pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
 
 % set page margins (assumes letter paper)
 \geometry{body={6.5in, 9.0in},
@@ -63,10 +63,10 @@
 \setlength\parindent{0em}
 
 % set line spacing
-\setstretch{1}
+\setstretch{0.95}
 
 % define space between list items
-\newcommand{\listitemspace}{0.1em}
+\newcommand{\listitemspace}{0.2em}
 
 % make unordered lists without bullets and use compact spacing
 \renewenvironment{itemize}
@@ -111,13 +111,14 @@
     \raggedright{}
 
     % display your name as the document title
-    \namefont{\myname}
+    \begin{center}\namefont{\myname}\end{center}
 
+    % do I like centering my name?
     % affiliation and contact info blocks
     \vspace{1em}
     \begin{minipage}[t]{0.700\textwidth}
         % current primary affiliation, left-aligned
-        Organizations, Strategy, and International Management \\
+        Organizations, Strategy and International Management \\
         Naveen Jindal School of Management \\
         The University of Texas at Dallas
     \end{minipage}
@@ -125,7 +126,7 @@
         % contact info details, right-aligned
         \flushright{}
         \href{mailto:he.huang@utdallas.edu}{he.huang@utdallas.edu} \\
-        +1 469 996 8112 \\
+        +1 (469) 996-8112 \\
         \href{https://orcid.org/0000-0001-5915-5988}{ocrid:0000-0001-5915-5988}
     \end{minipage}
 
@@ -561,6 +562,68 @@
 
 
 
+    \section*{References}
+
+    \subsection*{Junfeng Wu, Ph.D.}
+        \begin{minipage}[t]{0.700\textwidth}
+        % current primary affiliation, left-aligned
+        Associate Professor of Management \\
+        Organizations, Strategy and International Management \\
+        Naveen Jindal School of Management \\
+        The University of Texas at Dallas
+    \end{minipage}
+    \begin{minipage}[t]{0.295\textwidth}
+        % contact info details, right-aligned
+        \flushright{}
+        \href{mailto:junfeng.fu@utdallas.edu}{junfeng.fu@utdallas.edu} \\
+        +1 (972) 883-5053 
+    \end{minipage}
+
+
+    \subsection*{Riki Takeuchi, Ph.D.}
+        \begin{minipage}[t]{0.700\textwidth}
+        % current primary affiliation, left-aligned
+        \\Dr. Joseph Picken Distinguished Professor in Innovation and\\Entrepreneurship
+        \\Organizations, Strategy and International Management
+        \\Naveen Jindal School of Management
+        \\The University of Texas at Dallas
+        \end{minipage}
+        \begin{minipage}[t]{0.295\textwidth}
+        % contact info details, right-aligned
+        \flushright{}
+        \href{mailto:riki.takeuchi@utdallas.edu}{riki.takeuchi@utdallas.edu} \\
+        +1 (972) 883-5112
+        \end{minipage}
+        
+    \subsection*{Karren Knowlton, Ph.D.}
+        \begin{minipage}[t]{0.700\textwidth}
+        % current primary affiliation, left-aligned
+        Assistant Professor of Organizational Behavior
+        \\Organizations, Strategy and International Management
+        \\Naveen Jindal School of Management
+        \\The University of Texas at Dallas
+        \end{minipage}
+        \begin{minipage}[t]{0.295\textwidth}
+        % contact info details, right-aligned
+        \flushright{}
+        \href{mailto:knowlton@utdallas.edu}{knowlton@utdallas.edu} \\
+        +1 (972) 883-5002
+        \end{minipage}
+
+    \subsection*{Sabrina D. Volpone, Ph.D.}
+        \begin{minipage}[t]{0.700\textwidth}
+        % current primary affiliation, left-aligned
+        \\Associate Professor
+        \\Organizations, Strategy and International Management
+        \\Naveen Jindal School of Management
+        \\The University of Texas at Dallas
+        \end{minipage}
+        \begin{minipage}[t]{0.295\textwidth}
+        % contact info details, right-aligned
+        \flushright{}
+        \href{mailto:sabrina.volpone@utdallas.edu}{sabrina.volpone@utdallas.edu} \\
+        \end{minipage}
+        
     % display today's date as Month Year after a vertical space below the end of the text
     \begin{center}
        \vfill
