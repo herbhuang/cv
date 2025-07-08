@@ -5,7 +5,7 @@
 % Repo: https://github.com/gboeing/cv
 
 \RequirePackage[l2tabu,orthodox]{nag} % warn if using any obsolete commands
-\documentclass[11pt,letterpaper]{report} % document style
+\documentclass[12pt,letterpaper]{report} % document style
 
 
 % load encoding and font packages for pdflatex, in order
@@ -27,6 +27,7 @@
 \usepackage{tabto}    % make nice tabbing
 \usepackage{titlesec} % allow custom section fonts
 \usepackage[super]{nth} % use nth in text
+\usepackage[flushmargin]{footmisc}
 
 % load hyperref last for compatibility
 \usepackage{hyperref} % enable hyperlinks and pdf metadata
@@ -47,11 +48,11 @@
 % set section heading fonts and before/after spacing
 \SetTracking{encoding=*, family=\sfdefault}{30} % increase sans serif headings tracking
 \titleformat{\section}{\lsstyle\sffamily\small\bfseries\uppercase}{}{}{}{}
-\titlespacing{\section}{0pt}{30pt plus 4pt minus 4pt}{8pt plus 2pt minus 2pt}
+\titlespacing{\section}{0pt}{24pt plus 4pt minus 4pt}{8pt plus 2pt minus 2pt}
 
 % set subsection heading fonts and before/after spacing
 \titleformat{\subsection}{\lsstyle\sffamily\footnotesize\bfseries}{}{}{}{}
-\titlespacing{\subsection}{0pt}{16pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+\titlespacing{\subsection}{0pt}{12pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
 
 % set page margins (assumes letter paper)
 \geometry{body={6.5in, 9.0in},
@@ -62,10 +63,10 @@
 \setlength\parindent{0em}
 
 % set line spacing
-\setstretch{0.9}
+\setstretch{1}
 
 % define space between list items
-\newcommand{\listitemspace}{0.25em}
+\newcommand{\listitemspace}{0em}
 
 % make unordered lists without bullets and use compact spacing
 \renewenvironment{itemize}
@@ -86,6 +87,10 @@
     parsep=\listitemspace,
     font=\normalfont}
 
+% footnote
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} 
+
+
 % print only the month and year when using \today
 \newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
 
@@ -96,7 +101,7 @@
     citecolor   = black,
     linkcolor   = black,
     pdfauthor   = {\myname},
-    pdfkeywords = {organizational behavior, human resource, management, employee mobility},
+    pdfkeywords = {organizational behavior, human resource, management, employee mobility, cognition, cv, academic},
     pdftitle    = {\myname: Curriculum Vitae},
     pdfsubject  = {Curriculum Vitae},
     pdfpagemode = UseNone
@@ -112,7 +117,7 @@
     \vspace{1em}
     \begin{minipage}[t]{0.700\textwidth}
         % current primary affiliation, left-aligned
-        Organizations, Strategy and International Management \\
+        Organizations, Strategy, and International Management \\
         Naveen Jindal School of Management \\
         The University of Texas at Dallas
     \end{minipage}
@@ -121,7 +126,7 @@
         \flushright{}
         \href{mailto:he.huang@utdallas.edu}{he.huang@utdallas.edu} \\
         +1 469 996 8112 \\
-        \href{https://orcid.org/0000-0001-5915-5988}{ocrid}
+        \href{https://orcid.org/0000-0001-5915-5988}{ocrid:0000-0001-5915-5988}
     \end{minipage}
 
 
@@ -129,8 +134,8 @@
 
     \begin{tablist}
 
-        \item[Ph.D.] \tab{}Organizational Behavior, The University of Texas at Dallas, 2021-present
-        \item[B.S.]  \tab{}Human Resource Management, Wuhan University, 2020
+        \item[Ph.D.]\tab{}Organizational Behavior, The University of Texas at Dallas, 2021-present
+        \item[B.S.] \tab{}Human Resource Management, Wuhan University, 2020
 
     \end{tablist}
 
@@ -147,27 +152,27 @@
     %     \item[2021--]   \tab{}Brookings Institution \\
     %                           Nonresident Senior Fellow, Metropolitan Policy Program \\
 
-    %     \item[2018--19] \tab{}Northeastern University \\
+    %     \item[2018--19]\tab{}Northeastern University \\
     %                           Assistant Professor, School of Public Policy and Urban Affairs \\
     %                           Faculty Affiliate, Network Science Institute \\
     %                           Faculty Affiliate, Global Resilience Institute
 
-    %     \item[2017--18] \tab{}University of California, Berkeley \\
+    %     \item[2017--18]\tab{}University of California, Berkeley \\
     %                           Postdoctoral Researcher, Department of City and Regional Planning
 
     % \end{tablist}
 
+    % footnotes for additional information
 
 
     \section*{Research Areas}
 
     \begin{itemize}
 
-        \item Employee Mobility: job mobility, team dynamics, turnover
+        \item Employee Mobility: turnover, membership dynamics, career path
         \item Organizational Cognition: motivation, attribution, social judgment
 
     \end{itemize}
-
 
 
     \section*{Publications}
@@ -176,7 +181,7 @@
 
     \begin{tablist}
 
-        \item[2022] \tab{}\href{https://doi.org/10.1108/LODJ-06-2021-0312}{Hu, L., Jiang, N., \textbf{Huang, H.}, \& Liu, Y. \enquote{Perceived competence overrides gender bias: Gender roles, affective trust and leader effectiveness.} \textit{Leadership \& Organization Development Journal}, 43(5): 719--733. }
+        \item[2022]\tab{}\href{https://doi.org/10.1108/LODJ-06-2021-0312}{Hu, L., Jiang, N., \textbf{Huang, H.}, \& Liu, Y. \enquote{Competence-bonus Effects for Female Leaders: Gender Roles, Affective Trust and Leader Effectiveness.} \textit{Leadership \& Organization Development Journal}, 43(5): 719--733. }
 
     \end{tablist}
 
@@ -186,34 +191,41 @@
 
     % \begin{tablist}
 
-    %     \item[2022] \tab{}G. Boeing, M. Batty, S. Jiang, and L. Schweitzer. \enquote{Urban Analytics: History, Trajectory, and Critique.} In: \textit{Handbook of Spatial Analysis in the Social Sciences} (pp. 503--516), edited by S. Rey and R. Franklin. Cheltenham, England:\ Edward Elgar. \href{https://doi.org/10.4337/9781789903942.00039}{doi:10.4337/9781789903942.00039}
+    %     \item[2022]\tab{}G. Boeing, M. Batty, S. Jiang, and L. Schweitzer. \enquote{Urban Analytics: History, Trajectory, and Critique.} In: \textit{Handbook of Spatial Analysis in the Social Sciences} (pp. 503--516), edited by S. Rey and R. Franklin. Cheltenham, England:\ Edward Elgar. \href{https://doi.org/10.4337/9781789903942.00039}{doi:10.4337/9781789903942.00039}
 
     % \end{tablist}
-
-
 
     \subsection*{Conference Proceedings}
 
     \begin{tablist}
 
-        \item[2021] \tab{}Hu, L., Jiang, N., \& \textbf{Huang, H.} \enquote{Competence-bonus Effects for Female Leaders: Gender Roles, Affective Trust and Leader Effectiveness.} \textit{Academy of Management Proceedings}, 11294. Virtual.
+        \item[2025]\tab{}\textbf{Huang, H.}, Wu, J., Jiang, N., \& Liu, Y. \enquote{Mutual Efforts into Leader-Follower Relationship, Relational Energy, and Resilience.} \textit{Academy of Management Proceedings \textbf{Best Papers}}, 18405. Copenhagen, Denmark.
 
-        \item[2021] \tab{}Liu, Y., \textbf{Huang, H.}, Jiang, N., \& Li, Y. \enquote{A Theory of Attribution Profiles and Employee (Dis)trust Reactions to Supervisor Justice Enactment.} \textit{Academy of Management Proceedings}, 13078. Virtual.
+        \item[2025]\tab{}Wu, J., Song L.J., \textbf{Huang, H.}, \& Zhang, A.M. \enquote{The Trickle-Down Effect of Servant Leadership Revisited: A Longitudinal Investigation.} \textit{Academy of Management Proceedings}, 13805. Copenhagen, Denmark.
+
+        \item[2021]\tab{}Hu, L., Jiang, N., \& \textbf{Huang, H.} \enquote{Competence-bonus Effects for Female Leaders: Gender Roles, Affective Trust and Leader Effectiveness.} \textit{Academy of Management Proceedings}, 11294. Virtual.
+
+        \item[2021]\tab{}Liu, Y., \textbf{Huang, H.}, Jiang, N., \& Li, Y. \enquote{A Theory of Attribution Profiles and Employee (Dis)trust Reactions to Supervisor Justice Enactment.} \textit{Academy of Management Proceedings}, 13078. Virtual.
 
 
     \end{tablist}
 
     \section*{Research Activities}
-    \subsection*{Working Projects}
+    \subsection*{Working Projects\footnote{The titles in the brackets are altered to protect anonymity for peer review.}}
 
     \begin{tablist}
 
-        \item[Under R] \tab{}Zhu, J., Liu, Y., Hu, L., \textbf{Huang, H.}, \& Fu, Z. [Faminily and Subjective Career Success.] \textit{Journal of Managerial Psychology}.
-        \item[] \tab{}\textbf{Huang, H.}, Wu, J., Jiang, N., \& Liu, Y. [Mutual Efforts in Leader-follower Relationship, Relational Energy, and Resilience.] \textit{Target}.
-        \item[] \tab{}Wu, J., Song, L., \textbf{Huang, H.},  Zhang, Z., \& Zhang, A.~M., \& Liu, Y. [The Trickle-Down Effect of Servant Leadership Revisited: A Longitudinal Investigation.]  \textit{Target}.
-        \item[] \tab{}\textbf{Huang, H.}, Takeuchi, R., \& Guo, N. [Boomerang Employeement and Firm Performance.] \textit{Target}.
-        \item[] \tab{}Takeuchi, R., Shao, R., \textbf{Huang, H.}, Kim, H., \& Zhang, R. [High Investment Human Resource System and Culture Values: A Meta-analysis Extension.] \textit{Target}.
-        \item[] \tab{}Takeuchi, R., Kim, H., \textbf{Huang, H.} \& Yun, S. [Exchange Ideology (In)congruence] \textit{Target}.
+        \item[under r.]\tab{}\textbf{Huang, H.}, Wu, J., Jiang, N., \& Liu, Y. [Relational Energy.] \textit{Personnel Psychology}.
+        
+        \item[under r.]\tab{}Zhu, J., Liu, Y., Hu, L., \textbf{Huang, H.}, \& Fu, Z. [Family and Subjective Career Success.] \textit{Journal of Managerial Psychology}.
+
+        \item[ms.]\tab{}Wu, J., Song, L., \textbf{Huang, H.},  Zhang, Z., \& Zhang, A.~M., \& Liu, Y. [Experienced Tensions and Creativity.]  \textit{In Preparation: Academy of Management Journal}.
+        
+        \item[ms.]\tab{}Kim, H.\footnote{\label{fn:eqauth}These authors contributed equally in this work.}, Takeuchi, R.\footref{fn:eqauth}, \textbf{Huang, H.}, \& Yun, S. [Exchange Ideology (In)congruence.] \textit{In Preparation: Journal of Applied Psychology}.
+
+        \item[ms.]\tab{}Takeuchi, R., Shao, R., \textbf{Huang, H.}, Kim, H., \& Zhang, R. [High Investment Human Resource System and Culture Values.] %\textit{In Preparation}.
+
+        \item[w.i.p.]\tab{}\textbf{Huang, H.}, Takeuchi, R., \& Guo, N. [Boomerang Employment and Firm Performance.] %\textit{In Preparation: Strategic Management Journal}.
 
 
     \end{tablist}
@@ -224,7 +236,7 @@
 
     % \begin{tablist}
 
-    %     \item[2024] \tab{} D. Adlakha, E. Resendiz, A.~V. Moudon, J. Sallis, C. Higgs, B. Giles-Corti, D. Salvo, E. Cerin, G. Boeing, S. Liu, and M. Lowe. \enquote{El Observatorio Global de Ciudades Saludables y Sostenibles.} \textit{Notas CPAU} 55, 2738. \href{https://bit.ly/3Xv8JOW}{https://bit.ly/3Xv8JOW}
+    %     \item[2024]\tab{}D. Adlakha, E. Resendiz, A.~V. Moudon, J. Sallis, C. Higgs, B. Giles-Corti, D. Salvo, E. Cerin, G. Boeing, S. Liu, and M. Lowe. \enquote{El Observatorio Global de Ciudades Saludables y Sostenibles.} \textit{Notas CPAU} 55, 2738. \href{https://bit.ly/3Xv8JOW}{https://bit.ly/3Xv8JOW}
 
 
     % \end{tablist}
@@ -235,7 +247,7 @@
 
     % \begin{tablist}
 
-    %     \item[2023] \tab{}R. Sanchez-Moyano, G. Boeing, and J.~G. Harten. \enquote{The Promises and Pitfalls of Housing Search Digitalization.} Federal Reserve Bank of San Francisco. Jun 28. \href{https://bit.ly/43dlGwo}{https://bit.ly/43dlGwo}
+    %     \item[2023]\tab{}R. Sanchez-Moyano, G. Boeing, and J.~G. Harten. \enquote{The Promises and Pitfalls of Housing Search Digitalization.} Federal Reserve Bank of San Francisco. Jun 28. \href{https://bit.ly/43dlGwo}{https://bit.ly/43dlGwo}
 
     % \end{tablist}
 
@@ -245,7 +257,7 @@
 
     % \begin{tablist}
 
-    %     \item[2014] \tab{}A.~E. Beck, G. Boeing, and D. Shannon. \textit{Systems and Methods for Analyzing Requirements}. United States patent US8650186B2, European patent EP2413256, Australian patent AU2011204935, Canadian patent CA2747481, Chinese patent CN102346763.
+    %     \item[2014]\tab{}A.~E. Beck, G. Boeing, and D. Shannon. \textit{Systems and Methods for Analyzing Requirements}. United States patent US8650186B2, European patent EP2413256, Australian patent AU2011204935, Canadian patent CA2747481, Chinese patent CN102346763.
 
 
     % \end{tablist}
@@ -256,9 +268,9 @@
 
     % \begin{tablist}
 
-    %     \item[2025] \tab{}\enquote{Democratizing Access to Open Data.} OECD Laboratory for Geospatial Analysis. Paris, France. Jan 24.
+    %     \item[2025]\tab{}\enquote{Democratizing Access to Open Data.} OECD Laboratory for Geospatial Analysis. Paris, France. Jan 24.
 
-    %     \item[2024] \tab{}\enquote{Generalizing and Localizing the Science of Urban Networks.} NYU Center for Urban Science and Progress. Brooklyn, New York. Oct 28.
+    %     \item[2024]\tab{}\enquote{Generalizing and Localizing the Science of Urban Networks.} NYU Center for Urban Science and Progress. Brooklyn, New York. Oct 28.
 
     % \end{tablist}
 
@@ -268,7 +280,7 @@
 
     % \begin{tablist}
 
-    % \item[2023] \tab{}\enquote{Spatial Analytics to Benchmark and Monitor Healthy and Sustainable Cities.} Exploring the Research Opportunities from the Intersection of Advancing Planetary Health and Cardiovascular Disease: Improving Human Health. Hosted by the U.S. National Institutes of Health. Virtual. Dec 14--15.
+    % \item[2023]\tab{}\enquote{Spatial Analytics to Benchmark and Monitor Healthy and Sustainable Cities.} Exploring the Research Opportunities from the Intersection of Advancing Planetary Health and Cardiovascular Disease: Improving Human Health. Hosted by the U.S. National Institutes of Health. Virtual. Dec 14--15.
 
     % \end{tablist}
 
@@ -276,9 +288,9 @@
 
     \begin{tablist}
 
-        %\item[2023] \tab{}\enquote{Generalizability in Urban Science.} USC Price School Faculty Seminar Series. Los Angeles, California. Nov 14.
+        %\item[2023]\tab{}\enquote{Generalizability in Urban Science.} USC Price School Faculty Seminar Series. Los Angeles, California. Nov 14.
 
-        \item[2023] \tab{}\enquote{How do ambivalent leaders influence employee engagement?} \textit{PhD Student Poster Competition and Art Showcase}. The University of Texas at Dallas. Richardson, TX. Oct 25.
+        \item[2023]\tab{}\enquote{How do Ambivalent Leaders Influence Employee Engagement?} \textit{PhD Student Poster Competition and Art Showcase}. The University of Texas at Dallas. Richardson, TX. Oct 25.
 
     \end{tablist}
 
@@ -289,7 +301,7 @@
 
     % \begin{tablist}
 
-    %     \item[2024] \tab{}\enquote{The Design of American Streets.} Keynote address. Induction ceremony of the Nu Theta chapter of Gamma Theta Upsilon, the international geographical honor society. Los Angeles, California. Apr 23.
+    %     \item[2024]\tab{}\enquote{The Design of American Streets.} Keynote address. Induction ceremony of the Nu Theta chapter of Gamma Theta Upsilon, the international geographical honor society. Los Angeles, California. Apr 23.
 
     % \end{tablist}
 
@@ -297,7 +309,7 @@
 
     % \begin{tablist}
 
-    %     \item[2017] \tab{}\enquote{Emerging Computational Methods in Urban Design.} Association of Collegiate Schools of Planning Annual Conference. Denver, Colorado. Oct 12--15.
+    %     \item[2017]\tab{}\enquote{Emerging Computational Methods in Urban Design.} Association of Collegiate Schools of Planning Annual Conference. Denver, Colorado. Oct 12--15.
 
     % \end{tablist}
 
@@ -305,7 +317,7 @@
 
     % \begin{tablist}
 
-    %     \item[2021] \tab{}\enquote{Big Data and Machine Learning for Urban Mobility.} Association of Collegiate Schools of Planning Annual Conference. Virtual. Oct 21--23.
+    %     \item[2021]\tab{}\enquote{Big Data and Machine Learning for Urban Mobility.} Association of Collegiate Schools of Planning Annual Conference. Virtual. Oct 21--23.
 
 
     % \end{tablist}
@@ -314,7 +326,7 @@
 
     % \begin{tablist}
 
-    %     \item[2022] \tab{}\enquote{Teaching Data Science in Urban Planning.} Panelist with Marta Gonz{\'a}lez, Sarah Williams, and Anthony Vanky; chaired by Adam Millard-Ball. Association of Collegiate Schools of Planning Annual Conference. Toronto, Canada. Nov 3--6.
+    %     \item[2022]\tab{}\enquote{Teaching Data Science in Urban Planning.} Panelist with Marta Gonz{\'a}lez, Sarah Williams, and Anthony Vanky; chaired by Adam Millard-Ball. Association of Collegiate Schools of Planning Annual Conference. Toronto, Canada. Nov 3--6.
 
 
     % \end{tablist}
@@ -323,30 +335,10 @@
 
     % \begin{tablist}
 
-    %     \item[2025] \tab{}J.~G. Harten and G. Boeing. \enquote{Sharing Domesticity: What Can Online Rental Listing Texts Reveal about Homemaking Among Strangers?} International Sociological Association Forum. Rabat, Morocco. Jul 6--11.
+    %     \item[2025]\tab{}J.~G. Harten and G. Boeing. \enquote{Sharing Domesticity: What Can Online Rental Listing Texts Reveal about Homemaking Among Strangers?} International Sociological Association Forum. Rabat, Morocco. Jul 6--11.
 
     % \end{tablist}
 
-
-
-    % \section*{Grants and Awards}
-
-    % \subsection*{Awards and Honors}
-
-    % \begin{tablist}
-
-    %     \item[2025] \tab{}Zephyr Foundation Exceptional Technical Achievement Award
-    %     \item[2024] \tab{}USC Price High Impact Research Award
-
-    % \end{tablist}
-
-    % \subsection*{Competitive Grants and Fellowships}
-
-    % \begin{tablist}
-
-    %     %\item[2024--26] \tab{}Mobility Equity Research Initiative: Reducing Accessibility Gaps for the Most Disadvantaged (\$2,970,000). U.S. Department of Transportation research grant. Co-I.\@
-
-    % \end{tablist}
 
 
 
@@ -356,12 +348,69 @@
 
     \begin{tablist}
 
-        \item[2024] \tab{}Introduction to Organizational Behavior, Independent Lecturer
+        \item[2024 F]\tab{}Introduction to Organizational Behavior, Instructor
+        \item[2024 S]\tab{}Introduction to Organizational Behavior, Instructor
         
+    \end{tablist}
+
+
+    \section*{Awards and Honors} % Grants and Awards
+
+    % \subsection*{Awards and Honors}
+
+    \begin{tablist}
+
+        \item[2025]\tab{}Best Paper Proceedings, Academy of Management Annual Meeting
+        \item[2022]\tab{}Jindal Research Fellowship, The University of Texas at Dallas
+
+    \end{tablist}
+
+    % \subsection*{Competitive Grants and Fellowships}
+
+    % \begin{tablist}
+
+    %     %\item[2024--26]\tab{}Mobility Equity Research Initiative: Reducing Accessibility Gaps for the Most Disadvantaged (\$2,970,000). U.S. Department of Transportation research grant. Co-I.\@
+
+    % \end{tablist}
+
+
+
+    \section*{Professional Development}
+
+    \subsection*{Consortium for the Advancement of Research Methods and Analysis}
+
+    \begin{tablist}
+    
+        \item[2025]\tab{}Publishing Papers with Interview Data
+        \item[2023]\tab{}Alternatives to Difference Scores
+        \item[2022]\tab{}Introduction to SEM, Advanced SEM I \& II
+        \item[2021]\tab{}Systematic Reviews and Meta-Analysis in R
+
+    \end{tablist}
+
+    \subsection*{Academy of Management}
+
+    \begin{tablist}
+        \item[2022]\tab{}New Doctoral Student Consortium
+        
+    \end{tablist}
+
+
+    \subsection*{The University of Texas at Dallas}
+
+    \begin{tablist}
+
+        \item[2025]\tab{}Graduate Teaching Certificate
 
     \end{tablist}
 
 
+    \subsection*{Nueromatch Academy}
+
+    \begin{tablist}
+        \item[2021]\tab{}Computational Neuroscience Education
+        
+    \end{tablist}
     \section*{Service}
 
 
@@ -380,8 +429,8 @@
 
    \begin{tablist}
 
-       \item[2023--24]    \tab{}JSOM PhD Social Club, The University of Texas at Dallas, Vice President of Communications
-
+       \item[2023--24]\tab{}JSOM PhD Social Club, The University of Texas at Dallas, Vice President of Communications
+       \item[2023--24]\tab{}OSIM PhD Student Brownbag Series, The University of Texas at Dallas, Host
    \end{tablist}
 
     % \subsection*{Academic Journal Editorship}
@@ -389,9 +438,9 @@
     % \begin{tablist}
 
     %     \item[2020--]   \tab{}\textit{Urban Findings}, editorial board
-    %     \item[2021--24] \tab{}\textit{Urban Studies}, editorial board
+    %     \item[2021--24]\tab{}\textit{Urban Studies}, editorial board
     %     \item[2021]     \tab{}\textit{PLOS One}, guest academic editor
-    %     \item[2013--14] \tab{}\textit{Berkeley Planning Journal}, book review editor
+    %     \item[2013--14]\tab{}\textit{Berkeley Planning Journal}, book review editor
 
     % \end{tablist}
 
@@ -409,7 +458,7 @@
     % \begin{tablist}
     %     \item[2024--]   \tab{}USC Price Department of Urban Planning and Spatial Analysis hiring search committee
     %     \item[2024--]   \tab{}USC Price research committee
-    %     \item[2024--25] \tab{}USC Price dean search committee
+    %     \item[2024--25]\tab{}USC Price dean search committee
     % \end{tablist}
 
     % \subsection*{Doctoral Committees}
@@ -458,11 +507,15 @@
 
 
 
-    \section*{Memberships}
+    \section*{Society Membership}
+
+    \subsection*{Academy of Management}
 
     \begin{itemize}
 
-        \item Academy of Management
+        \item Organizational Behavior Division
+        \item Human Resource Division
+        \item Managerial and Organizational Cognition Division
 
     \end{itemize}
 
@@ -484,12 +537,12 @@
 
     % \begin{tablist}
 
-    %     \item[2017--19] \tab{}The Public Good Projects, New York, New York
-    %     \item[2017--18] \tab{}Calthorpe Analytics, Berkeley, California
-    %     \item[2016--18] \tab{}UrbanSim Inc., Berkeley, California
-    %     \item[2013--15] \tab{}Avalon Health Economics, Morristown, New Jersey
+    %     \item[2017--19]\tab{}The Public Good Projects, New York, New York
+    %     \item[2017--18]\tab{}Calthorpe Analytics, Berkeley, California
+    %     \item[2016--18]\tab{}UrbanSim Inc., Berkeley, California
+    %     \item[2013--15]\tab{}Avalon Health Economics, Morristown, New Jersey
     %     \item[2013]     \tab{}Raimi \& Associates, Berkeley, California
-    %     \item[2010--11] \tab{}Voluntary Service Overseas, London, England
+    %     \item[2010--11]\tab{}Voluntary Service Overseas, London, England
 
     % \end{tablist}
 
@@ -499,11 +552,12 @@
 
     % \begin{tablist}
 
-    %     \item[2009--13] \tab{}Accenture, New York, New York; London, England; San Diego, California
-    %     \item[2007--09] \tab{}Permission Data, New York, New York
-    %     \item[2004--07] \tab{}Acumen Inc., Mesa, Arizona
+    %     \item[2009--13]\tab{}Accenture, New York, New York; London, England; San Diego, California
+    %     \item[2007--09]\tab{}Permission Data, New York, New York
+    %     \item[2004--07]\tab{}Acumen Inc., Mesa, Arizona
 
     % \end{tablist}
+
 
 
 
