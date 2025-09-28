@@ -5,7 +5,7 @@
 % Repo: https://github.com/gboeing/cv
 
 \RequirePackage[l2tabu,orthodox]{nag} % warn if using any obsolete commands
-\documentclass[11pt,letterpaper]{report} % document style
+\documentclass[12pt,letterpaper]{report} % document style
 
 
 % load encoding and font packages for pdflatex, in order
@@ -27,6 +27,7 @@
 \usepackage{tabto}    % make nice tabbing
 \usepackage{titlesec} % allow custom section fonts
 \usepackage[super]{nth} % use nth in text
+\usepackage[flushmargin]{footmisc}
 
 % load hyperref last for compatibility
 \usepackage{hyperref} % enable hyperlinks and pdf metadata
@@ -42,16 +43,16 @@
 \newcommand{\listtabwidth}{1.6cm}
 
 % define font to use as document's title
-\newcommand{\namefont}[1]{{\normalfont\bfseries\Huge{#1}}}
+\newcommand{\namefont}[1]{{\normalfont\bfseries\Large{#1}}}
 
 % set section heading fonts and before/after spacing
 \SetTracking{encoding=*, family=\sfdefault}{30} % increase sans serif headings tracking
-\titleformat{\section}{\lsstyle\sffamily\small\bfseries\uppercase}{}{}{}{}
-\titlespacing{\section}{0pt}{30pt plus 4pt minus 4pt}{8pt plus 2pt minus 2pt}
+\titleformat{\section}{\lsstyle\sffamily\normalsize\bfseries\uppercase}{}{}{}{}
+\titlespacing{\section}{0pt}{24pt plus 4pt minus 4pt}{8pt plus 2pt minus 2pt}
 
 % set subsection heading fonts and before/after spacing
-\titleformat{\subsection}{\lsstyle\sffamily\footnotesize\bfseries}{}{}{}{}
-\titlespacing{\subsection}{0pt}{16pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+\titleformat{\subsection}{\lsstyle\sffamily\normalsize\bfseries}{}{}{}{}
+\titlespacing{\subsection}{0pt}{8pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
 
 % set page margins (assumes letter paper)
 \geometry{body={6.5in, 9.0in},
@@ -62,10 +63,10 @@
 \setlength\parindent{0em}
 
 % set line spacing
-\setstretch{0.9}
+\setstretch{0.95}
 
 % define space between list items
-\newcommand{\listitemspace}{0.25em}
+\newcommand{\listitemspace}{0.2em}
 
 % make unordered lists without bullets and use compact spacing
 \renewenvironment{itemize}
@@ -86,6 +87,10 @@
     parsep=\listitemspace,
     font=\normalfont}
 
+% footnote
+\renewcommand{\thefootnote}{\fnsymbol{footnote}} 
+
+
 % print only the month and year when using \today
 \newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
 
@@ -96,7 +101,7 @@
     citecolor   = black,
     linkcolor   = black,
     pdfauthor   = {\myname},
-    pdfkeywords = {organizational behavior, human resource, management, employee mobility},
+    pdfkeywords = {organizational behavior, human resources, management, employee mobility, cognition, cv, academic},
     pdftitle    = {\myname: Curriculum Vitae},
     pdfsubject  = {Curriculum Vitae},
     pdfpagemode = UseNone
@@ -106,8 +111,9 @@
     \raggedright{}
 
     % display your name as the document title
-    \namefont{\myname}
+    \begin{center}\namefont{\myname}\end{center}
 
+    % do I like centering my name?
     % affiliation and contact info blocks
     \vspace{1em}
     \begin{minipage}[t]{0.700\textwidth}
@@ -120,7 +126,7 @@
         % contact info details, right-aligned
         \flushright{}
         \href{mailto:he.huang@utdallas.edu}{he.huang@utdallas.edu} \\
-        +1 469 996 8112 \\
+        +1 (469) 996-8112 \\
         \href{https://orcid.org/0000-0001-5915-5988}{ocrid:0000-0001-5915-5988}
     \end{minipage}
 
@@ -129,11 +135,45 @@
 
     \begin{tablist}
 
-        \item[Ph.D.] \tab{}Organizational Behavior, The University of Texas at Dallas, 2021-present
-        \item[B.S.]  \tab{}Human Resource Management, Wuhan University, 2020
+        \item[Ph.D.]\tab{}International Management Studies (Major: Organizational Behavior) \\The University of Texas at Dallas, 2021-present
+        \item[B.S.] \tab{}Human Resources Management\\Wuhan University, 2020
 
     \end{tablist}
 
+
+
+    % \section*{Appointments}
+
+    % \begin{tablist}
+
+    %     \item[2019--]   \tab{}University of Southern California \\
+    %                           Assistant Professor, Department of Urban Planning and Spatial Analysis, 2019-- \\
+    %                           Faculty Affiliate, Spatial Sciences Institute, 2021--
+
+    %     \item[2021--]   \tab{}Brookings Institution \\
+    %                           Nonresident Senior Fellow, Metropolitan Policy Program \\
+
+    %     \item[2018--19]\tab{}Northeastern University \\
+    %                           Assistant Professor, School of Public Policy and Urban Affairs \\
+    %                           Faculty Affiliate, Network Science Institute \\
+    %                           Faculty Affiliate, Global Resilience Institute
+
+    %     \item[2017--18]\tab{}University of California, Berkeley \\
+    %                           Postdoctoral Researcher, Department of City and Regional Planning
+
+    % \end{tablist}
+
+    % footnotes for additional information
+
+
+    \section*{Research Areas}
+
+    \begin{itemize}
+
+        \item Employee Mobility: turnover, membership dynamics, career path
+        \item Organizational Cognition: motivation, attribution, social judgment
+
+    \end{itemize}
 
 
     \section*{Publications}
@@ -142,46 +182,183 @@
 
     \begin{tablist}
 
-        \item[2022] \tab{}\href{https://doi.org/10.1108/LODJ-06-2021-0312}{Hu, L., Jiang, N., \textbf{Huang, H.}, \& Liu, Y. \enquote{Perceived competence overrides gender bias: Gender roles, affective trust and leader effectiveness.} \textit{Leadership \& Organization Development Journal}, 43(5): 719--733. }
+        \item[2022]\tab{}Hu, L., Jiang, N., \textbf{Huang, H.}, \& Liu, Y. \href{https://doi.org/10.1108/LODJ-06-2021-0312}{\enquote{Competence-bonus effects for female leaders: Gender roles, affective trust and leader effectiveness.}} \textit{Leadership \& Organization Development Journal}, 43(5): 719--733. 
 
     \end{tablist}
 
 
-
-    \subsection*{Conference Proceedings}
+    \subsection*{Best Paper Proceedings}
 
     \begin{tablist}
-
-        \item[2021] \tab{}Hu, L., Jiang, N., \& \textbf{Huang, H.} \enquote{Competence-bonus Effects for Female Leaders: Gender Roles, Affective Trust and Leader Effectiveness.} \textit{Academy of Management Proceedings}, 11294. Virtual.
-
-        \item[2021] \tab{}Liu, Y., \textbf{Huang, H.}, Jiang, N., \& Li, Y. \enquote{A Theory of Attribution Profiles and Employee (Dis)trust Reactions to Supervisor Justice Enactment.} \textit{Academy of Management Proceedings}, 13078. Virtual.
-
-        % \item[2021] \tab{}C. Higgs, A. Alderton, J. Rozek, D. Adlakha, H. Badland, G. Boeing, A. Both, E. Cerin, M. Chandrabose, C. De Gruyter, L. Gunn, A. De Livera, E. Hinckson, S. Liu, S. Mavoa, J. Sallis, K. Simons, and B. Giles-Corti. \enquote{Calculation of Policy-Relevant Spatial Indicators of Urban Liveability: Experiences of Scaling a Research Programme from Local to Global.} \textit{10\textsuperscript{th} State of Australasian Cities Conference}. Melbourne, Australia: APO.\@ \href{https://doi.org/10.25916/jbnk-hp52}{doi:10.25916/jbnk-hp52}
-
+        \item[2025]\tab{}\textbf{Huang, H.}, Wu, J., Jiang, N., \& Liu, Y. \href{https://journals.aom.org/doi/abs/10.5465/AMPROC.2025.60bp}{\enquote{Mutual efforts into leader-follower relationship, relational energy, and resilience.}} In Sonia Taneja (Ed.), \textit{Proceedings of the Eighty-fifth Annual Meeting of the Academy of Management.} Online ISSN: 2151-6561.
+        
     \end{tablist}
 
 
+    \section*{Conference Participation}
 
-    \section*{Research Activities}
-    \subsection*{Working Projects}
-
+    \subsection*{Presentations}
+    
     \begin{tablist}
 
-        \item[Under R] \tab{}Zhu, J., Liu, Y., Hu, L., \textbf{Huang, H.}, \& Fu, Z. [Faminily and Subjective Career Success.] \textit{Journal of Managerial Psychology}.
+        \item[2025]\tab{}\textbf{Huang, H.}, Wu, J., Jiang, N., \& Liu, Y. \enquote{Mutual efforts into leader-follower relationship, relational energy, and resilience.} \textit{Academy of Management Annual Meeting}. Copenhagen, Denmark. Jul 28.
+        
+        \item[2025]\tab{}Wu, J., Song L.J., \textbf{Huang, H.}, \& Zhang, A.M. \enquote{The trickle-down effect of servant leadership revisited: A longitudinal investigation.} \textit{Academy of Management Annual Meeting}. Copenhagen, Denmark. Jul 28.
+    
+        \item[2023]\tab{}\textbf{Huang, H.} \enquote{How do ambivalent leaders influence employee engagement?} \textit{PhD Student Poster Competition and Art Showcase}. The University of Texas at Dallas. Richardson, TX. Oct 25.
+
+        \item[2021]\tab{}Hu, L., Jiang, N., \& \textbf{Huang, H.} \enquote{Competence-bonus effects for female leaders: Gender roles, affective trust and leader effectiveness.} \textit{Academy of Management Annual Meeting}. Virtual. 
+        
+        \item[2021]\tab{}Liu, Y., \textbf{Huang, H.}, Jiang, N., \& Li, Y. \enquote{A theory of attribution profiles and employee (dis)trust reactions to supervisor justice enactment.} \textit{Academy of Management Annual Meeting}. Virtual. 
 
     \end{tablist}
+
+    % \subsection*{Panels Organized}
+    
+    % \begin{tablist}
+
+    %     \item[2025]\tab{}\enquote{In it Together: New Directions in Leader-Follower Exchanges} \textit{Academy of Management Proceedings}, 13805. Copenhagen, Denmark.
+        
+    % \end{tablist}
+    % \subsection*{Edited Articles and Reviews}
+
+    % \begin{tablist}
+
+    %     \item[2024]\tab{}D. Adlakha, E. Resendiz, A.~V. Moudon, J. Sallis, C. Higgs, B. Giles-Corti, D. Salvo, E. Cerin, G. Boeing, S. Liu, and M. Lowe. \enquote{El Observatorio Global de Ciudades Saludables y Sostenibles.} \textit{Notas CPAU} 55, 2738. \href{https://bit.ly/3Xv8JOW}{https://bit.ly/3Xv8JOW}
+
+
+    % \end{tablist}
+
+
+
+    % \subsection*{Reports and Other Publications}
+
+    % \begin{tablist}
+
+    %     \item[2023]\tab{}R. Sanchez-Moyano, G. Boeing, and J.~G. Harten. \enquote{The Promises and Pitfalls of Housing Search Digitalization.} Federal Reserve Bank of San Francisco. Jun 28. \href{https://bit.ly/43dlGwo}{https://bit.ly/43dlGwo}
+
+    % \end{tablist}
+
+
+
+    % \subsection*{Patents}
+
+    % \begin{tablist}
+
+    %     \item[2014]\tab{}A.~E. Beck, G. Boeing, and D. Shannon. \textit{Systems and Methods for Analyzing Requirements}. United States patent US8650186B2, European patent EP2413256, Australian patent AU2011204935, Canadian patent CA2747481, Chinese patent CN102346763.
+
+
+    % \end{tablist}
+
+
+
+    % \section*{Invited Talks}
+
+    % \begin{tablist}
+
+    %     \item[2025]\tab{}\enquote{Democratizing Access to Open Data.} OECD Laboratory for Geospatial Analysis. Paris, France. Jan 24.
+
+    %     \item[2024]\tab{}\enquote{Generalizing and Localizing the Science of Urban Networks.} NYU Center for Urban Science and Progress. Brooklyn, New York. Oct 28.
+
+    % \end{tablist}
+
+
+
+    % \subsection*{Invited Symposium Talks}
+
+    % \begin{tablist}
+
+    % \item[2023]\tab{}\enquote{Spatial Analytics to Benchmark and Monitor Healthy and Sustainable Cities.} Exploring the Research Opportunities from the Intersection of Advancing Planetary Health and Cardiovascular Disease: Improving Human Health. Hosted by the U.S. National Institutes of Health. Virtual. Dec 14--15.
+
+    % \end{tablist}
+
+    % \section*{Campus Talks}
+
+    % \begin{tablist}
+
+    %     %\item[2023]\tab{}\enquote{Generalizability in Urban Science.} USC Price School Faculty Seminar Series. Los Angeles, California. Nov 14.
+
+    % \end{tablist}
+
+
+    % \section*{Conference Activity}
+
+    % \subsection*{Keynote and Plenary Addresses}
+
+    % \begin{tablist}
+
+    %     \item[2024]\tab{}\enquote{The Design of American Streets.} Keynote address. Induction ceremony of the Nu Theta chapter of Gamma Theta Upsilon, the international geographical honor society. Los Angeles, California. Apr 23.
+
+    % \end{tablist}
+
+    % \subsection*{Sessions Organized}
+
+    % \begin{tablist}
+
+    %     \item[2017]\tab{}\enquote{Emerging Computational Methods in Urban Design.} Association of Collegiate Schools of Planning Annual Conference. Denver, Colorado. Oct 12--15.
+
+    % \end{tablist}
+
+    % \subsection*{Sessions Chaired/Moderated}
+
+    % \begin{tablist}
+
+    %     \item[2021]\tab{}\enquote{Big Data and Machine Learning for Urban Mobility.} Association of Collegiate Schools of Planning Annual Conference. Virtual. Oct 21--23.
+
+
+    % \end{tablist}
+
+    % \subsection*{Invited Panelist}
+
+    % \begin{tablist}
+
+    %     \item[2022]\tab{}\enquote{Teaching Data Science in Urban Planning.} Panelist with Marta Gonz{\'a}lez, Sarah Williams, and Anthony Vanky; chaired by Adam Millard-Ball. Association of Collegiate Schools of Planning Annual Conference. Toronto, Canada. Nov 3--6.
+
+
+    % \end{tablist}
+
+    % \subsection*{Conference Papers Presented\footnote{Presenting author \textit{italicized} if other than first author.}}
+
+    % \begin{tablist}
+
+    %     \item[2025]\tab{}J.~G. Harten and G. Boeing. \enquote{Sharing Domesticity: What Can Online Rental Listing Texts Reveal about Homemaking Among Strangers?} International Sociological Association Forum. Rabat, Morocco. Jul 6--11.
+
+    % \end{tablist}
+
+
+
 
     \section*{Teaching}
 
     \subsection*{The University of Texas at Dallas}
 
+    \begin{itemize}
+
+    \item Organizational Behavior, Fall 2024 (Undergraduate), Instructor
+    
+    \item Organizational Behavior, Spring 2024 (Undergraduate), Instructor
+        
+    \end{itemize}
+
+    \section*{Awards and Honors} % Grants and Awards
+
+    % \subsection*{Awards and Honors}
+
     \begin{tablist}
 
-        \item[2024] \tab{}Introduction to Organizational Behavior
+        \item[2022--23]\tab{}Jindal Research Fellowship, The University of Texas at Dallas
 
     \end{tablist}
 
+    % \subsection*{Competitive Grants and Fellowships}
 
+    % \begin{tablist}
+
+    %     %\item[2024--26]\tab{}Mobility Equity Research Initiative: Reducing Accessibility Gaps for the Most Disadvantaged (\$2,970,000). U.S. Department of Transportation research grant. Co-I.\@
+
+    % \end{tablist}
+
+    
     \section*{Service}
 
 
@@ -191,7 +368,7 @@
 
         \item Leadership \& Organization Development Journal
         
-        \item Academy of Management Annual Meeting
+        \item Academy of Management Annual Conference
         
     \end{itemize}
 
@@ -199,16 +376,140 @@
    \subsection*{Service to the Community}
 
    \begin{tablist}
-
-       \item[2023--24]    \tab{}JSOM PhD Social Club, The University of Texas at Dallas, Vice President of Communications
-
+   
+       \item[2025]\tab{}Academy of Management Annual Meeting, Session Moderator
+       \item[2023--24]\tab{}JSOM PhD Social Club, The University of Texas at Dallas, Vice President of Communications
+       \item[2023--24]\tab{}OSIM PhD Student Brownbag Series, The University of Texas at Dallas, Moderator
+       
    \end{tablist}
+
+    % \subsection*{Academic Journal Editorship}
+
+    % \begin{tablist}
+
+    %     \item[2020--]   \tab{}\textit{Urban Findings}, editorial board
+    %     \item[2021--24]\tab{}\textit{Urban Studies}, editorial board
+    %     \item[2021]     \tab{}\textit{PLOS One}, guest academic editor
+    %     \item[2013--14]\tab{}\textit{Berkeley Planning Journal}, book review editor
+
+    % \end{tablist}
+
+    % \subsection*{Service to the Field}
+
+    % \begin{tablist}
+
+    %     \item[2022--2025]   \tab{}Academy of Management Proceedings, reviewer
+    %     \item[2023]   \tab{}Leadership & Organization Development Journal, reviewer
+
+    % \end{tablist}
+
+    % \subsection*{Service to the University}
+
+    % \begin{tablist}
+    %     \item[2024--]   \tab{}USC Price Department of Urban Planning and Spatial Analysis hiring search committee
+    %     \item[2024--]   \tab{}USC Price research committee
+    %     \item[2024--25]\tab{}USC Price dean search committee
+    % \end{tablist}
+
+    % \subsection*{Doctoral Committees}
+
+    % \begin{itemize}
+
+    %     \item Robert Binder, USC Price, exam committee
+
+    % \end{itemize}
+
+    % \subsection*{Studio Review Jury}
+
+    % \begin{itemize}
+
+    % \item MIT, Workshop on Geographic Information Systems (Prof.\ Sarah Williams), Fall 2018
+
+    % \end{itemize}
+
+
+
+    %\section*{Peer Review}
+
+    % \subsection*{Academic Press Peer Review}
+
+    % \begin{itemize}
+
+    %     \item Cambridge University Press
+    %     \item Routledge
+    %     \item Springer Nature
+    %     \item Taylor \& Francis
+
+    % \end{itemize}
+
+    % \subsection*{Funding Agency Peer Review}
+
+    % \begin{itemize}
+
+    %     \item European Science Foundation
+    %     \item Israel Science Foundation
+    %     \item U.S. National Science Foundation
+    %     \item Research Grants Council of Hong Kong
+    %     \item Social Sciences and Humanities Research Council of Canada
+    %     \item United Arab Emirates University, Office of Associate Provost for Research
+
+    % \end{itemize}
+
+
+
+    \section*{Society Membership}
+
+
+    \begin{itemize}
+
+        \item Academy of Management
+        
+        \item Society for Industrial and Organizational Psychology
+        
+    \end{itemize}
+
+
+    % \section*{Credentials}
+
+    % \begin{itemize}
+
+    %     \item U.S. Department of Defense secret clearance
+    %     \item U.S. Department of Homeland Security public trust
+    %     \item Project Management Professional (PMP)
+
+    % \end{itemize}
+
+
+
+    % \section*{Consulting}
+
+    % \begin{tablist}
+
+    %     \item[2017--19]\tab{}The Public Good Projects, New York, New York
+    %     \item[2017--18]\tab{}Calthorpe Analytics, Berkeley, California
+    %     \item[2016--18]\tab{}UrbanSim Inc., Berkeley, California
+    %     \item[2013--15]\tab{}Avalon Health Economics, Morristown, New Jersey
+    %     \item[2013]     \tab{}Raimi \& Associates, Berkeley, California
+    %     \item[2010--11]\tab{}Voluntary Service Overseas, London, England
+
+    % \end{tablist}
+
+
+
+    % \section*{Professional Employment}
+
+    % \begin{tablist}
+
+    %     \item[2009--13]\tab{}Accenture, New York, New York; London, England; San Diego, California
+    %     \item[2007--09]\tab{}Permission Data, New York, New York
+    %     \item[2004--07]\tab{}Acumen Inc., Mesa, Arizona
+
+    % \end{tablist}
 
 
     % display today's date as Month Year after a vertical space below the end of the text
     \begin{center}
-        \vfill
+       \vfill
         updated \monthyeardate\today
     \end{center}
-
 \end{document}
