@@ -15,18 +15,30 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v5
 
-      - name: Build PDF
+      - name: Build all CV PDFs
         uses: xu-cheng/latex-action@v4
         with:
-          root_file: cv-hhuang.tex
+          # latexmk multi-pass; three entry points share _cv-content.tex
+          root_file: |
+            cv-hhuang.tex
+            cv-hhuang.short.tex
+            cv-hhuang-onepage.tex
 
-      - name: Upload PDF to assets
+      - name: Stage PDFs for R2
+        run: |
+          mkdir -p dist
+          cp cv-hhuang.pdf dist/cv-hhuang.pdf
+          cp cv-hhuang.short.pdf dist/cv-hhuang.short.pdf
+          cp cv-hhuang-onepage.pdf dist/cv-hhuang.onepage.pdf
+          ls -la dist/
+
+      - name: Upload PDFs to Cloudflare R2
         uses: ryand56/r2-upload-action@latest
         with:
           r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
           r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
           r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           r2-bucket: ${{ secrets.R2_BUCKET }}
-          source-dir: cv-hhuang.pdf
+          source-dir: dist
           destination-dir: ./pdf/
           keep-file-fresh: true

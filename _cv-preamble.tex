@@ -1,0 +1,119 @@
+% Shared preamble for He (Herb) Huang CV.
+% Entry files must set \cvmode to full, short, or onepage before \input{this}.
+% Do not compile this file directly.
+
+\RequirePackage[l2tabu,orthodox]{nag}
+
+% Mode flags: extended ⊂ medium ⊂ core
+%   full    -> core + medium + extended
+%   short   -> core + medium (denser)
+%   onepage -> core only (tightest)
+\newif\ifcvmedium
+\newif\ifcvextended
+\ifx\cvmode\undefined
+  \errmessage{CV mode not set. Compile cv-hhuang.tex, cv-hhuang.short.tex, or cv-hhuang-onepage.tex}
+\fi
+\def\cvmodecheckfull{full}
+\def\cvmodecheckshort{short}
+\def\cvmodecheckonepage{onepage}
+\ifx\cvmode\cvmodecheckfull
+  \cvmediumtrue
+  \cvextendedtrue
+\else\ifx\cvmode\cvmodecheckshort
+  \cvmediumtrue
+  \cvextendedfalse
+\else\ifx\cvmode\cvmodecheckonepage
+  \cvmediumfalse
+  \cvextendedfalse
+\else
+  \errmessage{Unknown \string\cvmode; use full, short, or onepage}
+\fi\fi\fi
+
+% Encoding and fonts (pdflatex)
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{ebgaramond}
+\usepackage{tgheros}
+\usepackage{biolinum}
+
+\usepackage[USenglish]{babel}
+\usepackage[strict,autostyle]{csquotes}
+\usepackage[babel=true]{microtype}
+
+\usepackage{datetime}
+\usepackage{enumitem}
+\usepackage{geometry}
+\usepackage{setspace}
+\usepackage{tabto}
+\usepackage{titlesec}
+\usepackage[super]{nth}
+\usepackage[flushmargin]{footmisc}
+\usepackage{hyperref}
+
+\newcommand{\myname}{He (Herb) Huang}
+
+% Density by mode (margins only — avoid body height vs top/bottom conflicts)
+\ifcvextended
+  % full
+  \newcommand{\listtabwidth}{1.6cm}
+  \newcommand{\listitemspace}{0.2em}
+  \geometry{left=1.0in, right=1.0in, top=1.0in, bottom=1.0in}
+  \setstretch{0.95}
+  \titlespacing{\section}{0pt}{24pt plus 4pt minus 4pt}{8pt plus 2pt minus 2pt}
+  \titlespacing{\subsection}{0pt}{8pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+\else\ifcvmedium
+  % short (dense multi-section)
+  \newcommand{\listtabwidth}{1.5cm}
+  \newcommand{\listitemspace}{0.1em}
+  \geometry{left=0.75in, right=0.75in, top=0.6in, bottom=0.6in}
+  \setstretch{0.90}
+  \titlespacing{\section}{0pt}{12pt plus 2pt minus 2pt}{4pt plus 1pt minus 1pt}
+  \titlespacing{\subsection}{0pt}{5pt plus 2pt minus 2pt}{2pt plus 1pt minus 1pt}
+\else
+  % onepage
+  \newcommand{\listtabwidth}{1.4cm}
+  \newcommand{\listitemspace}{0.05em}
+  \geometry{left=0.5in, right=0.5in, top=0.4in, bottom=0.4in}
+  \setstretch{0.84}
+  \titlespacing{\section}{0pt}{7pt plus 1pt minus 1pt}{2pt plus 1pt minus 1pt}
+  \titlespacing{\subsection}{0pt}{3pt plus 1pt minus 1pt}{1pt plus 0.5pt minus 0.5pt}
+\fi\fi
+
+\newcommand{\namefont}[1]{{\normalfont\bfseries\Large{#1}}}
+\SetTracking{encoding=*, family=\sfdefault}{30}
+\titleformat{\section}{\lsstyle\sffamily\normalsize\bfseries\uppercase}{}{}{}{}
+\titleformat{\subsection}{\lsstyle\sffamily\normalsize\bfseries}{}{}{}{}
+
+\setlength\parindent{0em}
+
+\renewenvironment{itemize}
+{\begin{list}{}{\setlength{\leftmargin}{0em}
+                \setlength{\parskip}{0em}
+                \setlength{\itemsep}{\listitemspace}
+                \setlength{\parsep}{\listitemspace}}}
+{\end{list}}
+
+\TabPositions{\listtabwidth}
+\newlist{tablist}{description}{3}
+\setlist[tablist]{leftmargin=\listtabwidth,
+    labelindent=0em,
+    topsep=0em,
+    partopsep=0em,
+    itemsep=\listitemspace,
+    parsep=\listitemspace,
+    font=\normalfont}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
+
+\hypersetup{
+    colorlinks  = true,
+    urlcolor    = black,
+    citecolor   = black,
+    linkcolor   = black,
+    pdfauthor   = {\myname},
+    pdfkeywords = {organizational behavior, human resources, management, employee mobility, cognition, cv, academic},
+    pdftitle    = {\myname: Curriculum Vitae},
+    pdfsubject  = {Curriculum Vitae},
+    pdfpagemode = UseNone
+}
