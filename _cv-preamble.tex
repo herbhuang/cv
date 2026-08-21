@@ -53,8 +53,9 @@
 \newcommand{\myname}{He (Herb) Huang}
 
 % Density by mode (margins only — avoid body height vs top/bottom conflicts).
-% tablist gutter is sized for short date-like labels (`2026`, `2022--23`,
-% `in press`). Put longer status in the entry ([2nd R\&R]), not the label.
+% tablist labels are right-flushed to the tab stop: `2026` sits against the
+% body; `Summer 2026` grows left into the page margin instead of shoving
+% that row. Status that is not a date still belongs in the entry.
 \ifcvextended
   % full
   \newcommand{\listtabwidth}{1.6cm}
@@ -96,9 +97,15 @@
 {\end{list}}
 
 \TabPositions{\listtabwidth}
+\SetLabelAlign{tabright}{\hss#1\hskip 0.5em}
 \newlist{tablist}{description}{3}
-\setlist[tablist]{leftmargin=\listtabwidth,
+\setlist[tablist]{
+    leftmargin=\listtabwidth,
+    labelwidth=\listtabwidth,
+    labelsep=0pt,
     labelindent=0em,
+    align=tabright,
+    style=unboxed,
     topsep=0em,
     partopsep=0em,
     itemsep=\listitemspace,
