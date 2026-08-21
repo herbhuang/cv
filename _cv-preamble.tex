@@ -97,13 +97,14 @@
 {\end{list}}
 
 \TabPositions{\listtabwidth}
-\SetLabelAlign{tabright}{\hss#1\hskip 0.5em}
+% Origin at the tab stop; \llap grows left into the page margin.
+\SetLabelAlign{tabright}{\llap{#1\hskip 0.5em}}
 \newlist{tablist}{description}{3}
 \setlist[tablist]{
     leftmargin=\listtabwidth,
-    labelwidth=\listtabwidth,
+    labelwidth=0pt,
     labelsep=0pt,
-    labelindent=0em,
+    labelindent=\listtabwidth,
     align=tabright,
     style=unboxed,
     topsep=0em,
