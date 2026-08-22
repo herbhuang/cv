@@ -105,12 +105,14 @@ jobs:
       # its own, but until both secrets exist a fresh push is briefly invisible
       # to anyone following the published link.
       - name: Purge uploaded files from Cloudflare cache
+        id: purge
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
         run: |
           if [[ -z "${CLOUDFLARE_API_TOKEN}" || -z "${CLOUDFLARE_ZONE_ID}" ]]; then
             echo "::warning::Cloudflare secrets unset; skipping the cache purge."
+            echo "purged=false" >> "${GITHUB_OUTPUT}"
             exit 0
           fi
 
@@ -133,36 +135,62 @@ jobs:
             jq . <<<"${response}" >&2
             exit 1
           fi
+          echo "purged=true" >> "${GITHUB_OUTPUT}"
 
+      # Two different questions, kept apart. Did the upload land? -- ask the
+      # origin, via a cache-busting query string, which is a distinct cache key
+      # and so bypasses whatever the edge is holding. Is the edge serving it? --
+      # only meaningful once the purge has run, so it is checked only then.
+      # Measured 2026-08-22: with the purge skipped the plain URL served a
+      # previous object indefinitely and inconsistently between edges, so
+      # asserting on it here would fail forever rather than catch anything.
       - name: Verify published files
+        env:
+          PURGED: ${{ steps.purge.outputs.purged }}
         run: |
           published_dir="$(mktemp -d)"
           trap 'rm -rf "${published_dir}"' EXIT
+          cb="$(date +%s)$$"
+          fail=0
 
-          # A `find | while` runs in a subshell, where `exit 1` would only kill
-          # the pipeline -- read the list first so a mismatch fails the step.
+          # A `find | while` runs in a subshell, where the failure flag would
+          # not survive -- read the list first.
           mapfile -t staged < <(find dist/pdf dist/docx -type f | sort)
           for src in "${staged[@]}"; do
             key="${src#dist/}"                         # pdf/x.pdf, docx/x.docx
             got="${published_dir}/$(basename "${key}")"
 
-            # The edge can serve the previous object for a minute or two after
-            # an upload, so back off rather than giving up in 8 seconds.
-            for attempt in {1..7}; do
+            for attempt in {1..4}; do
               if curl --silent --show-error --fail \
-                  --output "${got}" "${ASSETS_BASE}/${key}" \
+                  --output "${got}" "${ASSETS_BASE}/${key}?cb=${cb}" \
                   && cmp --silent "${src}" "${got}"; then
-                echo "ok  ${key}"
+                echo "ok        ${key}"
                 break
               fi
 
-              if [[ "${attempt}" == "7" ]]; then
-                echo "::error::Published ${key} still does not match the new" \
-                     "export after $(( 2 ** 7 - 2 ))s. If the Cloudflare purge" \
-                     "is being skipped, add its two secrets."
-                exit 1
+              if [[ "${attempt}" == "4" ]]; then
+                echo "::error::R2 does not serve the new ${key}"
+                fail=1
               fi
 
               sleep "$(( 2 ** attempt ))"
             done
+
+            [[ "${PURGED}" == "true" ]] || continue
+
+            if curl --silent --show-error --fail \
+                --output "${got}" "${ASSETS_BASE}/${key}" \
+                && cmp --silent "${src}" "${got}"; then
+              echo "ok/edge   ${key}"
+            else
+              echo "::error::Edge still serves a stale ${key} after the purge"
+              fail=1
+            fi
           done
+
+          if [[ "${PURGED}" != "true" ]]; then
+            echo "::warning::Edge freshness unverified: the purge was skipped," \
+                 "so ${ASSETS_BASE} may serve an older copy for a while."
+          fi
+
+          exit "${fail}"

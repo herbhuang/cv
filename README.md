@@ -82,7 +82,11 @@ Compiled PDFs and Word files are **not** stored in git. On every push to `main`,
      `docx/cv-hhuang.onepage.docx`
 3. Purges those six URLs from Cloudflare's edge cache so the new files are
    served immediately from `https://assets.huanghe.phd`
-4. Downloads the public URLs and verifies that their bytes match the new build
+4. Verifies the upload by downloading each file back with a cache-busting
+   query string and comparing bytes. That asks the origin, not the edge: the
+   Word files are byte-reproducible (`SOURCE_DATE_EPOCH` is pinned to the
+   commit), so any difference is a real one. Edge freshness is a separate
+   question and is only asserted when the purge in step 3 actually ran.
 
 Secrets required:
 
