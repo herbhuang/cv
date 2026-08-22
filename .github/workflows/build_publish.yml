@@ -116,33 +116,35 @@ jobs:
             exit 0
           fi
 
-          # Preflight. Splitting "is the token valid" from "may it purge this
-          # zone" turns one opaque 401 into an actionable message: a failure
-          # here is the token value itself, a failure below is scope or zone.
-          # Length only -- never the value; a surprise here is a stray newline
-          # captured with the paste, or the token ID copied instead of the
-          # token, both of which present as a bare 401.
-          echo "token length: ${#CLOUDFLARE_API_TOKEN} (Cloudflare issues 40)"
+          # Preflight, advisory only. Length distinguishes the two token kinds:
+          # a user token (profile > API Tokens) is 40 characters, an
+          # account-owned one is 53. They verify at different endpoints --
+          # /user/tokens/verify only accepts user tokens and answers a valid
+          # account-owned token with code 1000 "Invalid API Token", which looks
+          # exactly like a bad secret but is not one. So the verify call runs
+          # only for a 40-character token, and never decides the outcome:
+          # purge_cache below is the authority.
+          token_len="${#CLOUDFLARE_API_TOKEN}"
+          echo "token length: ${token_len} (user token 40, account-owned 53)"
+
           if [[ "${CLOUDFLARE_API_TOKEN}" != "${CLOUDFLARE_API_TOKEN//[[:space:]]/}" ]]; then
             echo "::error::CLOUDFLARE_API_TOKEN contains whitespace. Re-add it" \
                  "with 'gh secret set CLOUDFLARE_API_TOKEN' and no trailing newline."
             exit 1
           fi
 
-          verify="$(curl --silent --show-error \
-            --request GET \
-            "https://api.cloudflare.com/client/v4/user/tokens/verify" \
-            --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")" || true
-
-          if ! jq -e '.success == true' <<<"${verify}" >/dev/null 2>&1; then
-            echo "::error::Cloudflare rejected the token itself, before any" \
-                 "zone or permission was considered. Check that the secret" \
-                 "holds the token value (not its ID) and is not swapped with" \
-                 "CLOUDFLARE_ZONE_ID."
-            jq -c '.errors // .' <<<"${verify}" >&2 || echo "${verify}" >&2
-            exit 1
+          if [[ "${token_len}" == "40" ]]; then
+            verify="$(curl --silent --show-error \
+              --request GET \
+              "https://api.cloudflare.com/client/v4/user/tokens/verify" \
+              --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}")" || true
+            if jq -e '.success == true' <<<"${verify}" >/dev/null 2>&1; then
+              echo "token verified: $(jq -r '.result.status' <<<"${verify}")"
+            else
+              echo "::warning::/user/tokens/verify rejected the token;" \
+                   "continuing, purge_cache is the real test."
+            fi
           fi
-          echo "token verified: $(jq -r '.result.status' <<<"${verify}")"
 
           purge_payload="$(
             find dist/pdf dist/docx -type f \
@@ -168,8 +170,11 @@ jobs:
           if [[ "${http_code}" != "200" ]] \
              || ! jq -e '.success == true' <<<"${body}" >/dev/null 2>&1; then
             echo "::error::Cloudflare purge failed with HTTP ${http_code}." \
-                 "403 means the token lacks Zone:Cache Purge on this zone;" \
-                 "400 or 404 means CLOUDFLARE_ZONE_ID is wrong."
+                 "401 means the token was not accepted at all -- note that an" \
+                 "account-owned token (53 chars) was rejected here on" \
+                 "2026-08-22 where a user token from the profile API Tokens" \
+                 "page works; 403 means the token lacks Zone:Cache Purge on" \
+                 "this zone; 400 or 404 means CLOUDFLARE_ZONE_ID is wrong."
             jq . <<<"${body}" >&2 || echo "${body}" >&2
             exit 1
           fi
