@@ -1,18 +1,23 @@
 # Build all CV variants into dist/ (source of truth for content: _cv-content.tex)
 # Usage:
-#   make            # build full, short, onepage PDFs
-#   make full       # full CV only
-#   make short      # short CV only
-#   make onepage    # one-page CV only
+#   make            # PDFs + Word versions of all three variants
+#   make pdf        # PDFs only
+#   make docx       # Word versions only (needs pandoc; no LaTeX required)
+#   make full       # full CV PDF only
+#   make short      # short CV PDF only
+#   make onepage    # one-page CV PDF only
 #   make clean      # remove aux files and dist/
 
 LATEX  ?= pdflatex
 LATEX_FLAGS = -interaction=nonstopmode -halt-on-error -file-line-error
+PANDOC ?= pandoc
 DIST   = dist
 
-.PHONY: all full short onepage clean dirs
+.PHONY: all pdf docx full short onepage clean dirs
 
-all: full short onepage
+all: pdf docx
+
+pdf: full short onepage
 
 dirs:
 	@mkdir -p $(DIST)
@@ -31,6 +36,10 @@ short: dirs
 
 onepage: dirs
 	$(call compile_two_pass,cv-hhuang.onepage,cv-hhuang-onepage.tex)
+
+# Word export shares _cv-content.tex with the PDFs; see scripts/build-docx.sh.
+docx: dirs
+	PANDOC=$(PANDOC) DIST=$(DIST) ./scripts/build-docx.sh
 
 clean:
 	rm -rf $(DIST)

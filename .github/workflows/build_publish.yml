@@ -1,10 +1,19 @@
 ---
-name: Build and Publish PDF
+name: Build and Publish CV
 
 on:  # yamllint disable-line rule:truthy
   push:
     branches: [main]
   workflow_dispatch:
+
+concurrency:
+  group: cv-r2-publish
+  cancel-in-progress: true
+
+env:
+  # Pinned so CI and the local docker image produce byte-comparable Word files.
+  PANDOC_VERSION: '3.10'
+  ASSETS_BASE: https://assets.huanghe.phd
 
 jobs:
   build_latex:
@@ -26,11 +35,35 @@ jobs:
 
       - name: Stage PDFs for R2
         run: |
-          mkdir -p dist
-          cp cv-hhuang.pdf dist/cv-hhuang.pdf
-          cp cv-hhuang.short.pdf dist/cv-hhuang.short.pdf
-          cp cv-hhuang-onepage.pdf dist/cv-hhuang.onepage.pdf
-          ls -la dist/
+          mkdir -p dist/pdf
+          cp cv-hhuang.pdf dist/pdf/cv-hhuang.pdf
+          cp cv-hhuang.short.pdf dist/pdf/cv-hhuang.short.pdf
+          cp cv-hhuang-onepage.pdf dist/pdf/cv-hhuang.onepage.pdf
+          ls -la dist/pdf/
+
+      - name: Install pandoc
+        run: |
+          url="https://github.com/jgm/pandoc/releases/download"
+          deb="pandoc-${PANDOC_VERSION}-1-amd64.deb"
+          if curl --silent --show-error --location --fail --retry 3 \
+              --output /tmp/pandoc.deb \
+              "${url}/${PANDOC_VERSION}/${deb}"; then
+            sudo dpkg --install /tmp/pandoc.deb
+          else
+            echo "::warning::pandoc ${PANDOC_VERSION} unavailable; using apt"
+            sudo apt-get update
+            sudo apt-get install --yes --no-install-recommends pandoc
+          fi
+          pandoc --version | head -1
+
+      # Same _cv-content.tex the PDFs came from, via scripts/tex2html.py.
+      # tex2html.py exits non-zero on a macro it does not know, so a new macro
+      # breaks the build here rather than silently dropping content.
+      - name: Build Word versions
+        run: |
+          DIST=dist/docx ./scripts/build-docx.sh
+          rm -f dist/docx/reference.docx dist/docx/*.html
+          ls -la dist/docx/
 
       - name: Upload PDFs to Cloudflare R2
         uses: ryand56/r2-upload-action@latest
@@ -39,6 +72,75 @@ jobs:
           r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
           r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
           r2-bucket: ${{ secrets.R2_BUCKET }}
-          source-dir: dist
-          destination-dir: ./pdf/
-          keep-file-fresh: true
+          source-dir: dist/pdf
+          destination-dir: pdf/
+
+      - name: Upload Word versions to Cloudflare R2
+        uses: ryand56/r2-upload-action@latest
+        with:
+          r2-account-id: ${{ secrets.R2_ACCOUNT_ID }}
+          r2-access-key-id: ${{ secrets.R2_ACCESS_KEY_ID }}
+          r2-secret-access-key: ${{ secrets.R2_SECRET_ACCESS_KEY }}
+          r2-bucket: ${{ secrets.R2_BUCKET }}
+          source-dir: dist/docx
+          destination-dir: docx/
+
+      # Replacing an R2 object does not invalidate copies already held at the
+      # Cloudflare edge. Purge only the objects uploaded above so each
+      # successful export becomes visible immediately.
+      - name: Purge uploaded files from Cloudflare cache
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ZONE_ID: ${{ secrets.CLOUDFLARE_ZONE_ID }}
+        run: |
+          : "${CLOUDFLARE_API_TOKEN:?Missing CLOUDFLARE_API_TOKEN secret}"
+          : "${CLOUDFLARE_ZONE_ID:?Missing CLOUDFLARE_ZONE_ID secret}"
+
+          purge_payload="$(
+            find dist/pdf dist/docx -type f \
+              | sed "s|^dist/|${ASSETS_BASE}/|" \
+              | jq -Rnc '{files: [inputs]}'
+          )"
+          echo "${purge_payload}"
+
+          response="$(curl --silent --show-error --fail-with-body \
+            --retry 3 --retry-all-errors \
+            --request POST \
+            "https://api.cloudflare.com/client/v4/zones/${CLOUDFLARE_ZONE_ID}/purge_cache" \
+            --header "Authorization: Bearer ${CLOUDFLARE_API_TOKEN}" \
+            --header "Content-Type: application/json" \
+            --data "${purge_payload}")"
+
+          if ! jq -e '.success == true' <<<"${response}" >/dev/null; then
+            jq . <<<"${response}" >&2
+            exit 1
+          fi
+
+      - name: Verify published files
+        run: |
+          published_dir="$(mktemp -d)"
+          trap 'rm -rf "${published_dir}"' EXIT
+
+          # A `find | while` runs in a subshell, where `exit 1` would only kill
+          # the pipeline -- read the list first so a mismatch fails the step.
+          mapfile -t staged < <(find dist/pdf dist/docx -type f | sort)
+          for src in "${staged[@]}"; do
+            key="${src#dist/}"                         # pdf/x.pdf, docx/x.docx
+            got="${published_dir}/$(basename "${key}")"
+
+            for attempt in {1..5}; do
+              if curl --silent --show-error --fail \
+                  --output "${got}" "${ASSETS_BASE}/${key}" \
+                  && cmp --silent "${src}" "${got}"; then
+                echo "ok  ${key}"
+                break
+              fi
+
+              if [[ "${attempt}" == "5" ]]; then
+                echo "::error::Published ${key} does not match the new export"
+                exit 1
+              fi
+
+              sleep 2
+            done
+          done
