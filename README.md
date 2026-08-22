@@ -88,8 +88,12 @@ Secrets required:
 
 - R2 upload: `R2_ACCOUNT_ID`, `R2_ACCESS_KEY_ID`, `R2_SECRET_ACCESS_KEY`,
   `R2_BUCKET`
-- Cache purge: `CLOUDFLARE_ZONE_ID` and `CLOUDFLARE_API_TOKEN`. Scope the API
-  token to the `huanghe.phd` zone with only the `Cache Purge` permission.
+- Cache purge (**optional**): `CLOUDFLARE_ZONE_ID` and `CLOUDFLARE_API_TOKEN`.
+  Scope the API token to the `huanghe.phd` zone with only the `Cache Purge`
+  permission. The step skips itself while these are unset, which is fine as
+  long as the zone answers `cf-cache-status: DYNAMIC` -- an R2 custom domain
+  does not cache until a Cache Rule says so, and an uncached URL cannot go
+  stale. Add them alongside any Cache Rule you put on the zone.
 
 The purge clears Cloudflare's edge cache. It cannot remove a copy that a
 visitor's browser has already cached locally.
