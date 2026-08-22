@@ -32,80 +32,344 @@
 % Encoding and fonts (pdflatex)
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{ebgaramond}
-\usepackage{tgheros}
-\usepackage{biolinum}
+% ---------------------------------------------------------------------------
+% Typefaces. Two independent switches, both overridable from an entry file
+% before \input{_cv-preamble}:
+%   \def\cvfont{...}      body:     garamond | pagella | palatino | libertine
+%                                   | libertinus
+%   \def\cvheadfont{...}  headings: rm | heros | gillius | biolinum
+%                                   | libertinussans | ysabeau
+% `rm` puts the headings in the body serif, set bold. Packages load first and
+% \rmdefault/\sfdefault are pinned afterwards, because several of these claim
+% both families on load (libertine and libertinus set serif *and* sans).
+% Classico/URW Optima is not in TeX Live's repository; gillius (Gill Sans ADF)
+% is the nearest free humanist stand-in.
+% ---------------------------------------------------------------------------
+\ifx\cvfont\undefined\def\cvfont{libertinus}\fi
+\ifx\cvheadfont\undefined\def\cvheadfont{libertinussans}\fi
+
+\def\cvbodypagella{pagella}
+\def\cvbodypalatino{palatino}
+\def\cvbodylibertine{libertine}
+\def\cvbodylibertinus{libertinus}
+\ifx\cvfont\cvbodypagella
+  \usepackage{tgpagella}\def\cvrmfam{qpl}
+\else\ifx\cvfont\cvbodypalatino
+  \usepackage{mathpazo}\def\cvrmfam{ppl}
+\else\ifx\cvfont\cvbodylibertine
+  \usepackage{libertine}\def\cvrmfam{LinuxLibertineT-TLF}
+\else\ifx\cvfont\cvbodylibertinus
+  \usepackage{libertinus-type1}\def\cvrmfam{LibertinusSerif-TLF}
+\else
+  \usepackage{ebgaramond}\def\cvrmfam{EBGaramond-OsF}
+\fi\fi\fi\fi
+
+\def\cvheadrm{rm}
+\def\cvheadheros{heros}
+\def\cvheadgillius{gillius}
+\def\cvheadbiolinum{biolinum}
+\def\cvheadlibsans{libertinussans}
+\def\cvheadysabeau{ysabeau}
+\ifx\cvheadfont\cvheadheros
+  \usepackage{tgheros}\def\cvsffam{qhv}
+\else\ifx\cvheadfont\cvheadgillius
+  \usepackage{gillius}\def\cvsffam{GilliusADF-LF}
+\else\ifx\cvheadfont\cvheadbiolinum
+  % the libertine bundle already ships Biolinum; loading both clashes
+  \ifx\cvfont\cvbodylibertine\else\usepackage{biolinum}\fi
+  \def\cvsffam{LinuxBiolinumT-TLF}
+\else\ifx\cvheadfont\cvheadlibsans
+  \usepackage{libertinus-type1}\def\cvsffam{LibertinusSans-TLF}
+\else\ifx\cvheadfont\cvheadysabeau
+  \usepackage{ysabeau}\def\cvsffam{Ysabeau-TLF}
+\else
+  \def\cvsffam{\sfdefault}
+\fi\fi\fi\fi\fi
+
+\renewcommand*{\rmdefault}{\cvrmfam}
+\ifx\cvheadfont\cvheadrm
+  \newcommand{\cvheadfamily}{\rmfamily}
+  \newcommand{\cvheaddefault}{\rmdefault}
+\else
+  \renewcommand*{\sfdefault}{\cvsffam}
+  \newcommand{\cvheadfamily}{\sffamily}
+  \newcommand{\cvheaddefault}{\sfdefault}
+\fi
+
+% Semibold italic for level-3 headings, from a real face wherever one exists.
+% Ysabeau has one in the sans. Libertinus has one only in the SERIF: its sans
+% ships no semibold and no bold italic at all (see T1LibertinusSans-TLF.fd),
+% so level 3 steps down into the body face there -- which reads correctly as a
+% level below a sans level 2. Anything else strokes the regular outline.
+\ifx\cvheadfont\cvheadysabeau
+  \newcommand{\cvsemi}[1]{{\fontseries{sb}\selectfont #1}}
+\else\ifx\cvfont\cvbodylibertinus
+  \newcommand{\cvsemi}[1]{{\rmfamily\fontseries{sb}\selectfont #1}}
+\else
+  % No real semibold: stroke the regular outline. Loaded here rather than with
+  % the other packages so the default font pairing does not carry pdfrender.
+  \usepackage{pdfrender}
+  \newcommand{\melinewidth}{0.18pt}
+  \newcommand{\cvsemi}[1]{%
+    \textpdfrender{TextRenderingMode=FillStroke,LineWidth=\melinewidth}{#1}}
+\fi\fi
 
 \usepackage[USenglish]{babel}
-\usepackage[strict,autostyle]{csquotes}
 \usepackage[babel=true]{microtype}
 
 \usepackage{datetime}
-\usepackage{enumitem}
 \usepackage{geometry}
 \usepackage{setspace}
-\usepackage{tabto}
 \usepackage{titlesec}
 \usepackage[super]{nth}
-\usepackage[flushmargin]{footmisc}
 \usepackage{hyperref}
 
 \newcommand{\myname}{He (Herb) Huang}
 
 % Density by mode (margins only — avoid body height vs top/bottom conflicts).
-% tablist gutter is sized for short date-like labels (`2026`, `2022--23`,
-% `in press`). Put longer status in the entry ([2nd R\&R]), not the label.
+% Leading is 1.0 inside a paragraph and \listitemspace adds the extra 0.20 of
+% a line between entries, so entry-to-entry spacing reads as 1.20. The short
+% and one-page modes trade that away -- they carry the same sections as the
+% full CV and only fit their page budget compressed.
+
+% Left label column + hanging indent for wrapped entry lines. The same in every
+% mode: it aligns columns down the page, so it is not a density knob.
+\newcommand{\listtabwidth}{0.5in}
+
 \ifcvextended
   % full
-  \newcommand{\listtabwidth}{1.6cm}
-  \newcommand{\listitemspace}{0.2em}
+  \newcommand{\listitemspace}{0.2\baselineskip}
+  \newcommand{\cvupdatedskip}{1.5em}
   \geometry{left=1.0in, right=1.0in, top=1.0in, bottom=1.0in}
-  \setstretch{0.95}
-  \titlespacing{\section}{0pt}{24pt plus 4pt minus 4pt}{8pt plus 2pt minus 2pt}
+  \setstretch{1.0}
+  \titlespacing{\section}{0pt}{24pt plus 4pt minus 4pt}{9pt plus 2pt minus 2pt}
   \titlespacing{\subsection}{0pt}{8pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
+  \titlespacing{\subsubsection}{0pt}{5pt plus 2pt minus 2pt}{2pt plus 1pt minus 1pt}
 \else\ifcvmedium
   % short (dense multi-section)
-  \newcommand{\listtabwidth}{1.5cm}
-  \newcommand{\listitemspace}{0.1em}
+  \newcommand{\listitemspace}{0.04\baselineskip}
+  \newcommand{\cvupdatedskip}{1em}
   \geometry{left=0.75in, right=0.75in, top=0.6in, bottom=0.6in}
   \setstretch{0.90}
-  \titlespacing{\section}{0pt}{12pt plus 2pt minus 2pt}{4pt plus 1pt minus 1pt}
+  \titlespacing{\section}{0pt}{12pt plus 2pt minus 2pt}{5.5pt plus 1pt minus 1pt}
   \titlespacing{\subsection}{0pt}{5pt plus 2pt minus 2pt}{2pt plus 1pt minus 1pt}
+  \titlespacing{\subsubsection}{0pt}{3pt plus 1pt minus 1pt}{1pt plus 0.5pt minus 0.5pt}
 \else
   % onepage
-  \newcommand{\listtabwidth}{1.4cm}
-  \newcommand{\listitemspace}{0.05em}
+  \newcommand{\listitemspace}{0.06\baselineskip}
+  \newcommand{\cvupdatedskip}{0.4em}
   \geometry{left=0.5in, right=0.5in, top=0.4in, bottom=0.4in}
-  \setstretch{0.84}
-  \titlespacing{\section}{0pt}{7pt plus 1pt minus 1pt}{2pt plus 1pt minus 1pt}
-  \titlespacing{\subsection}{0pt}{3pt plus 1pt minus 1pt}{1pt plus 0.5pt minus 0.5pt}
+  \setstretch{0.88}
+  \titlespacing{\section}{0pt}{5pt plus 1pt minus 1pt}{2.5pt plus 1pt minus 1pt}
+  \titlespacing{\subsection}{0pt}{2.5pt plus 1pt minus 1pt}{1pt plus 0.5pt minus 0.5pt}
+  \titlespacing{\subsubsection}{0pt}{2pt plus 1pt minus 1pt}{1pt plus 0.5pt minus 0.5pt}
+  \pagestyle{empty}   % a one-page document does not need to say it is page 1
 \fi\fi
 
-\newcommand{\namefont}[1]{{\normalfont\bfseries\Large{#1}}}
-\SetTracking{encoding=*, family=\sfdefault}{30}
-\titleformat{\section}{\lsstyle\sffamily\normalsize\bfseries\uppercase}{}{}{}{}
-\titleformat{\subsection}{\lsstyle\sffamily\normalsize\bfseries}{}{}{}{}
+\makeatletter
+\newcommand{\namefont}[1]{{\normalfont\bfseries\Large
+  \fontsize{\dimexpr\f@size pt+1pt\relax}{\dimexpr\f@size pt+4pt\relax}%
+  \selectfont #1}}
+\makeatother
+
+% Own-name emphasis in reference lists.
+\newcommand{\me}[1]{\textbf{#1}}
+
+\SetTracking{encoding=*, family=\cvheaddefault}{30}
+% Rule under level-1 headings, overhanging the measure by \cvruleover at each
+% end. It goes through titlesec's \titleline so it stays a bare box on the
+% vertical list -- a \makebox here would open a paragraph and pick up a full
+% \baselineskip of interline glue above and below the rule. The zero-width
+% \makebox lets the rule overhang without reporting an overfull box.
+\newlength{\cvruleover} \setlength{\cvruleover}{2pt}
+\newcommand{\cvsectionrule}{%
+  \vspace{-2pt}%
+  \titleline{%
+    \makebox[0pt][l]{\hspace*{-\cvruleover}%
+      \rule{\dimexpr\linewidth+2\cvruleover\relax}{0.4pt}}\hfil}}
+\titleformat{\section}{\lsstyle\cvheadfamily\normalsize\bfseries\uppercase}{}{}{}%
+  [{\cvsectionrule}]
+\titleformat{\subsection}{\lsstyle\cvheadfamily\normalsize\bfseries}{}{}{}{}
+% Level 3: same face, medium weight, italic -- audible under a bold level 2
+% without competing with it. Used for course audience and service groupings.
+\titleformat{\subsubsection}{\cvheadfamily\normalsize\itshape}{}{0pt}{\cvsemi}
 
 \setlength\parindent{0em}
 
-\renewenvironment{itemize}
-{\begin{list}{}{\setlength{\leftmargin}{0em}
-                \setlength{\parskip}{0em}
-                \setlength{\itemsep}{\listitemspace}
-                \setlength{\parsep}{\listitemspace}}}
-{\end{list}}
+% Uniform word spacing. TeX otherwise pads the space after `.', `?' and `:'
+% to ~1.5x, which in a reference list lands unevenly -- an entry whose title
+% ends in a sentence gets loose lines while an all-initials author string
+% stays tight. APA reference lists are single-spaced after periods anyway.
+%\frenchspacing
 
-\TabPositions{\listtabwidth}
-\newlist{tablist}{description}{3}
-\setlist[tablist]{leftmargin=\listtabwidth,
-    labelindent=0em,
-    topsep=0em,
-    partopsep=0em,
-    itemsep=\listitemspace,
-    parsep=\listitemspace,
-    font=\normalfont}
+% ---------------------------------------------------------------------------
+% Entry layout
+%
+%   \entl{PhD}{2021--present}  ->  PhD   body text ...............  2021--present
+%                                        wrapped lines hang here
+%   \ent{2025}                 ->  body text .............................  2025
+%                                      wrapped lines hang here
+%   \entn                      ->  body text, full width, no date
+%                                      wrapped lines hang here
+%
+% All three hang wrapped lines at \cvtabw so every column lines up down the
+% page. Use them inside `entries`, which neutralises the \par that \raggedright
+% smuggles into \\ (a \par would reset \parshape and drop the hang).
+% ---------------------------------------------------------------------------
+% The date column is measured at \begin{document} from the widest notation the
+% document actually prints, so swapping the body font resizes it automatically.
+% \cvdatewwide is the variant for entries that carry two terms at once; pass it
+% as \begin{entries}[\cvdatewwide].
+\newcommand{\cvdatesample}{2021--present}
+\newcommand{\cvdatesamplewide}{Fall 2022; Spring 2025}
+\newlength{\cvtabw}   \setlength{\cvtabw}{\listtabwidth}
+\newlength{\cvgap}    \setlength{\cvgap}{0.6em}
+\newlength{\cvminlast}\setlength{\cvminlast}{6em}
+\newlength{\cvragged} \setlength{\cvragged}{3em}
+\newlength{\cvdatew}
+\newlength{\cvdatewwide}
+\newlength{\cvmeas}
+\AtBeginDocument{%
+  \settowidth{\cvdatew}{\cvdatesample}\addtolength{\cvdatew}{0.35em}%
+  \settowidth{\cvdatewwide}{\cvdatesamplewide}\addtolength{\cvdatewwide}{0.35em}}
 
-\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+% Zero-width overlay: puts #1 flush against the right margin without consuming
+% horizontal space, so the body's own line breaking is untouched.
+\newcommand{\cvdate}[1]{%
+  \settowidth{\cvmeas}{#1}%
+  \ifdim\cvmeas>\cvdatew
+    \PackageWarning{cv}{Date '#1' overruns the column
+      (\the\cvmeas\space vs \the\cvdatew); widen \string\cvdatesample}%
+  \fi
+  \makebox[0pt][l]{\hspace*{\dimexpr\linewidth-\cvdatew\relax}%
+    \makebox[\cvdatew][r]{#1}}}
+
+% Every line stops short of the date column, so the body forms a rectangular
+% block that never runs underneath the date. Lines 2+ hang at \cvtabw.
+% \parfillskip caps how far the final line may fall short of the measure,
+% which is what forbids a one-word stub at the end of an entry.
+\newcommand{\cvshape}{%
+  \par\addvspace{\listitemspace}%
+  \parshape 2 0pt \dimexpr\linewidth-\cvdatew-\cvgap\relax
+              \cvtabw \dimexpr\linewidth-\cvtabw-\cvdatew-\cvgap\relax
+  \parfillskip=0pt plus
+    \dimexpr\linewidth-\cvtabw-\cvdatew-\cvgap-\cvminlast-\cvragged\relax
+  \noindent}
+
+\newcommand{\ent}[1]{\cvshape\cvdate{#1}\ignorespaces}
+
+
+\newcommand{\entl}[2]{%
+  \settowidth{\cvmeas}{#1}%
+  \ifdim\cvmeas>\dimexpr\cvtabw-0.5em\relax
+    \PackageWarning{cv}{Label '#1' crowds the \string\listtabwidth\space column}%
+  \fi
+  \cvshape\cvdate{#2}\makebox[\cvtabw][l]{#1}\ignorespaces}
+
+\newcommand{\entn}{%
+  \par\addvspace{\listitemspace}%
+  \hangindent=\cvtabw \hangafter=1
+  \parfillskip=0pt plus \dimexpr\linewidth-\cvtabw-\cvminlast-\cvragged\relax
+  \noindent\ignorespaces}
+
+\makeatletter
+\newenvironment{entries}[1][\cvdatew]
+  {\par\begingroup
+   \setlength{\cvdatew}{#1}%
+   \setlength{\parskip}{0pt}%
+   \let\\\@normalcr
+   % \raggedright's \rightskip is 0pt plus 1fil: infinite stretch means every
+   % line scores badness 0, so \parfillskip cannot forbid anything. Swapping in
+   % a finite \rightskip restores real badness; \cvragged is how far short of
+   % the measure an ordinary line may fall, so it doubles as the cap on how much
+   % the right edge may jitter -- but it must stay wide enough that the breaker
+   % can still afford to push a word down onto the final line. \hyphenpenalty
+   % keeps that tightness from being paid for in broken words, and
+   % \exhyphenpenalty does the same for the hyphens words already carry
+   % (Person-Supervisor), which \hyphenpenalty does not reach.
+   \rightskip=0pt plus \cvragged
+   \hyphenpenalty=2000 \exhyphenpenalty=2000
+   \tolerance=9999 \emergencystretch=2em \hbadness=4000}
+  {\par\endgroup}
+\makeatother
+
+% Two-column block (address | contact, or reference | contact). The right
+% column is set at its natural width so it can never wrap, and the left column
+% takes what is left; unlike fixed \textwidth fractions this survives a change
+% of body font.
+\newsavebox{\cvhdrbox}
+\newcommand{\cvheader}[2]{%
+  \sbox{\cvhdrbox}{\begin{tabular}[t]{@{}r@{}}#2\end{tabular}}%
+  \par\noindent
+  \hbox to\textwidth{%
+    \begin{minipage}[t]{\dimexpr\textwidth-\wd\cvhdrbox-1em\relax}#1\end{minipage}%
+    \hfill\usebox{\cvhdrbox}}%
+  \par}
+
+% ---------------------------------------------------------------------------
+% Author marks and the trailing note on a publication entry.
+%   \eqc / \advisee   superscript marks used inside author lists; \cvmarks is
+%                     the key, and lists only the marks in use
+%   \jabdc ... \jutd  one per ranking list, each linked to the list's own site
+%   \cvnote{...}      the single bracketed group that closes an entry
+%
+% Everything that trails an entry -- review status and ranking lists alike --
+% goes in one \cvnote, semicolon separated, status first:
+%
+%   \cvnote{2nd~R\&R; \jabs; \jft; \jtamuga}
+%     -> [2nd R&R; ABS 4*; FT50; TAMUGA]
+%
+% The group may break after a `;' -- that reads fine -- so tie any multi-word
+% status (2nd~R\&R, Fully~accepted) to keep it off a line of its own.
+%
+% Memberships verified 2026-08-22: TAMUGA indexes ten management journals
+% (JAP yes, JIBS no); JIBS is one of the UTD24.
+% ---------------------------------------------------------------------------
+\newcommand{\eqc}{\textsuperscript{*}}
+\newcommand{\advisee}{\textsuperscript{\dag}}
+% The printed key lists only the marks the document actually uses -- a key that
+% explains a symbol the reader never meets is noise. Add the advisee clause
+% back the first time an entry carries \advisee.
+\newcommand{\cvmarks}{\eqc Equal contribution.}
+
+% \jabdc is defined but deliberately not printed: ABDC A* adds nothing next to
+% ABS 4* and FT50. Drop it into a \cvnote if you ever want it back.
+\newcommand{\jabdc}{\href{https://abdc.edu.au/abdc-journal-quality-list/}%
+  {ABDC\,A\textsuperscript{*}}}
+\newcommand{\jabs}{\href{https://charteredabs.org/academic-journal-guide}%
+  {ABS\,4\textsuperscript{*}}}
+\newcommand{\jft}{\href{https://www.ft.com/content/3405a512-5cbb-11e1-8f1f-00144feabdc0}%
+  {FT50}}
+\newcommand{\jtamuga}{\href{https://www.tamugarankings.com/}{TAMUGA}}
+\newcommand{\jutd}{\href{https://jsom.utdallas.edu/the-utd-top-100-business-school-research-rankings/list-of-journals}%
+  {UTD24}}
+\newcommand{\cvnote}[1]{[#1]}
+
+% The Publications heading carries the mark key: a block underneath it in the
+% full CV, inline on the heading itself in the compressed modes where a whole
+% line is not worth the space. The inline note is boxed first so the heading's
+% \uppercase cannot reach its letters.
+\newsavebox{\cvnotebox}
+\newcommand{\cvpubheading}{%
+  \ifcvextended
+    \section*{Publications}%
+    \cvlegend{\cvmarks}%
+  \else
+    \savebox{\cvnotebox}{\normalfont\mdseries\footnotesize\cvmarks}%
+    \section*{Publications\hfill\usebox{\cvnotebox}}%
+  \fi}
+
+% Section-local mark legend, e.g. the journal-ranking and equal-contribution
+% marks used in Publications. Sits directly under the section heading so the
+% key is where the reader first meets the marks, rather than at the page foot
+% -- which in the full CV is a page away from half the entries that use them.
+\newcommand{\cvlegend}[1]{%
+  {\par\footnotesize
+   % No \addvspace above: the section's own after-spacing already separates the
+   % key from the rule, and a second gap detaches it from the heading it keys.
+   \rightskip=0pt plus 3em\relax #1\par
+   \addvspace{0.35\baselineskip}}}
+
 \newdateformat{monthyeardate}{\monthname[\THEMONTH] \THEYEAR}
 
 \hypersetup{
