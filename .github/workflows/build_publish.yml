@@ -118,12 +118,14 @@ jobs:
 
           # Preflight, advisory only. Length distinguishes the two token kinds:
           # a user token (profile > API Tokens) is 40 characters, an
-          # account-owned one is 53. They verify at different endpoints --
-          # /user/tokens/verify only accepts user tokens and answers a valid
-          # account-owned token with code 1000 "Invalid API Token", which looks
-          # exactly like a bad secret but is not one. So the verify call runs
-          # only for a 40-character token, and never decides the outcome:
-          # purge_cache below is the authority.
+          # account-owned one is 53. Both work here -- an account-owned token
+          # purges this zone fine. They merely verify at different endpoints:
+          # /user/tokens/verify accepts only user tokens and answers a valid
+          # account-owned one with code 1000 "Invalid API Token", which reads
+          # like a bad secret and is not. That false signal sent the 2026-08-22
+          # debugging after the token when the fault was the zone id, so the
+          # verify call runs only for a 40-character token and never decides
+          # the outcome: purge_cache below is the authority.
           token_len="${#CLOUDFLARE_API_TOKEN}"
           echo "token length: ${token_len} (user token 40, account-owned 53)"
 
@@ -170,11 +172,11 @@ jobs:
           if [[ "${http_code}" != "200" ]] \
              || ! jq -e '.success == true' <<<"${body}" >/dev/null 2>&1; then
             echo "::error::Cloudflare purge failed with HTTP ${http_code}." \
-                 "401 means the token was not accepted at all -- note that an" \
-                 "account-owned token (53 chars) was rejected here on" \
-                 "2026-08-22 where a user token from the profile API Tokens" \
-                 "page works; 403 means the token lacks Zone:Cache Purge on" \
-                 "this zone; 400 or 404 means CLOUDFLARE_ZONE_ID is wrong."
+                 "Check CLOUDFLARE_ZONE_ID first: a 401 with code 10000" \
+                 "'Authentication error' is what a wrong zone id returns, not" \
+                 "just a bad token, and that cost an hour on 2026-08-22." \
+                 "The zone id is on the zone's Overview page in the dashboard." \
+                 "403 means the token lacks Zone:Cache Purge on this zone."
             jq . <<<"${body}" >&2 || echo "${body}" >&2
             exit 1
           fi
