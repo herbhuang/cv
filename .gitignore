@@ -1,6 +1,12 @@
 secrets.txt
 .DS_Store
 
+## Resilio Sync placeholders (.rsls/.rslsd/.rslsf/.rslsz) — stand-ins for files
+## not yet materialised locally, recreated by the sync client, never content.
+*.rsls
+*.rsls[a-z]
+.sync/
+
 ## latex build file / output (PDFs live on Cloudflare R2, not in git)
 build/
 dist/
