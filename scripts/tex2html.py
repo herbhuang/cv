@@ -206,7 +206,7 @@ class Inline:
     #: macros consumed for their effect on layout only
     IGNORE_NOARG = {"raggedright", "raggedleft", "centering", "normalfont",
                     "footnotesize", "small", "par", "noindent", "relax",
-                    "cvupdatedskip", "cvdatewwide", "cvdatew", "ignorespaces"}
+                    "vfill", "cvdatewwide", "cvdatew", "ignorespaces"}
     IGNORE_ONEARG = {"vspace", "hspace", "thispagestyle", "pagestyle", "label"}
 
     def __init__(self, defs: dict[str, str], today: _dt.date):
@@ -450,7 +450,12 @@ def render(content: str, defs: dict[str, str], mode: str, today: _dt.date) -> st
 
 CSS = """\
 body { font-family: "Libertinus Serif", "Palatino Linotype", Georgia, serif; }
+h1, h2, h3, h4 {
+  font-family: "Alegreya Sans", "Trebuchet MS", Arial, sans-serif;
+}
 h1 { text-align: center; }
+h1, h2, h3 { font-weight: 700; }
+h4 { font-style: italic; font-weight: 500; }
 table { width: 100%; border-collapse: collapse; }
 td { vertical-align: top; border: none; }
 td[style*="right"] { text-align: right; }

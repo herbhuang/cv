@@ -7,7 +7,7 @@ LaTeX academic CV (adapted from [Geoff Boeing’s template](https://github.com/g
 | Role | File |
 |------|------|
 | **Edit this** (all facts, pubs, dates) | [`_cv-content.tex`](_cv-content.tex) |
-| Shared layout / density by mode | [`_cv-preamble.tex`](_cv-preamble.tex) |
+| Shared typography / layout / density | [`_cv-preamble.tex`](_cv-preamble.tex) |
 | Full CV entry | [`cv-hhuang.tex`](cv-hhuang.tex) (`\cvmode{full}`) |
 | Short dense CV entry | [`cv-hhuang.short.tex`](cv-hhuang.short.tex) (`\cvmode{short}`) |
 | One-page CV entry | [`cv-hhuang-onepage.tex`](cv-hhuang-onepage.tex) (`\cvmode{onepage}`) |
@@ -29,22 +29,29 @@ Do **not** duplicate CV text in the three entry files. They only set the mode an
 
 Density (font, margins, spacing) is controlled in `_cv-preamble.tex` from `\cvmode`.
 
+The production typography is intentionally fixed: **Libertinus Serif** for the
+body and **Alegreya Sans** for the name and all three heading levels. Level 1
+and level 2 use Alegreya's native bold; level 3 uses its native medium italic.
+
 ## Build locally
 
 ```bash
-make            # PDFs + Word versions of all three lengths, into dist/
+make            # PDFs + Word versions of all three lengths
 make pdf        # PDFs only
 make docx       # Word versions only
 make full       # full CV PDF only
 make short
 make onepage
+make clean-build # remove intermediates but keep final files
 make clean
 ```
 
-Requires `pdflatex` (TeX Live / MacTeX) for the PDFs and `pandoc` for the Word
-versions; neither target needs the other's toolchain. Overleaf: upload the repo
-and set the root file to one of the three entry `.tex` files; keep `_cv-*.tex`
-alongside them.
+Final files go to `output/pdf/` and `output/docx/`; temporary LaTeX, HTML, and
+reference-document files stay in `.build/`. Requires `pdflatex` with the
+`libertinus-type1` and `alegreya` packages (TeX Live / MacTeX) for PDFs, and
+`pandoc` for Word versions. Neither target needs the other's toolchain.
+Overleaf: upload the repo and set the root file to one of the three entry
+`.tex` files; keep `_cv-*.tex` alongside them.
 
 ### How the Word export works
 

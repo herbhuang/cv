@@ -9,7 +9,10 @@ secrets.txt
 
 ## latex build file / output (PDFs live on Cloudflare R2, not in git)
 build/
+.build/
 dist/
+output/
+tmp/
 *.pdf
 
 ## Core latex/pdflatex auxiliary files:

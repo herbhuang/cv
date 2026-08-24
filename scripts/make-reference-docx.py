@@ -4,10 +4,11 @@
     make-reference-docx.py -o dist/reference.docx
 
 Starts from `pandoc --print-default-data-file reference.docx` and replaces the
-handful of styles the CV uses, so the Word output echoes the PDF: a serif face,
-tight leading, ruled small-caps section headings, borderless layout tables and
-black hyperlinks. Generated at build time rather than committed, so there is no
-binary in the repo to drift out of sync with pandoc.
+handful of styles the CV uses, so the Word output echoes the PDF: Libertinus
+Serif body text, Alegreya Sans headings, tight leading, ruled section headings,
+borderless layout tables and black hyperlinks. Generated at build time rather
+than committed, so there is no binary in the repo to drift out of sync with
+pandoc.
 """
 
 from __future__ import annotations
@@ -21,8 +22,10 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-# Palatino Linotype ships with Windows Office; macOS Word substitutes Palatino.
-FONT = "Palatino Linotype"
+BODY_FONT = "Libertinus Serif"
+HEADING_FONT = "Alegreya Sans"
+HEADING_FONTS = (f'<w:rFonts w:ascii="{HEADING_FONT}" w:hAnsi="{HEADING_FONT}" '
+                 f'w:cs="{HEADING_FONT}"/>')
 
 STYLES: dict[str, str] = {
     # body ------------------------------------------------------------------
@@ -47,35 +50,35 @@ STYLES: dict[str, str] = {
 </w:style>""",
     # headings --------------------------------------------------------------
     # h1 is the name.
-    "Heading1": """
+    "Heading1": f"""
 <w:style w:type="paragraph" w:styleId="Heading1">
   <w:name w:val="heading 1"/><w:basedOn w:val="Normal"/>
   <w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="160"/>
     <w:outlineLvl w:val="0"/></w:pPr>
-  <w:rPr><w:b/><w:sz w:val="34"/><w:szCs w:val="34"/></w:rPr>
+  <w:rPr>{HEADING_FONTS}<w:b/><w:sz w:val="34"/><w:szCs w:val="34"/></w:rPr>
 </w:style>""",
     # h2 is a CV section: caps, tracked, with the rule underneath.
-    "Heading2": """
+    "Heading2": f"""
 <w:style w:type="paragraph" w:styleId="Heading2">
   <w:name w:val="heading 2"/><w:basedOn w:val="Normal"/>
   <w:pPr><w:keepNext/><w:spacing w:before="280" w:after="80"/>
     <w:pBdr><w:bottom w:val="single" w:sz="4" w:space="2" w:color="auto"/></w:pBdr>
     <w:outlineLvl w:val="1"/></w:pPr>
-  <w:rPr><w:b/><w:caps/><w:spacing w:val="14"/><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr>
+  <w:rPr>{HEADING_FONTS}<w:b/><w:caps/><w:spacing w:val="14"/><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr>
 </w:style>""",
-    "Heading3": """
+    "Heading3": f"""
 <w:style w:type="paragraph" w:styleId="Heading3">
   <w:name w:val="heading 3"/><w:basedOn w:val="Normal"/>
   <w:pPr><w:keepNext/><w:spacing w:before="140" w:after="50"/>
     <w:outlineLvl w:val="2"/></w:pPr>
-  <w:rPr><w:b/><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr>
+  <w:rPr>{HEADING_FONTS}<w:b/><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr>
 </w:style>""",
-    "Heading4": """
+    "Heading4": f"""
 <w:style w:type="paragraph" w:styleId="Heading4">
   <w:name w:val="heading 4"/><w:basedOn w:val="Normal"/>
   <w:pPr><w:keepNext/><w:spacing w:before="100" w:after="30"/>
     <w:outlineLvl w:val="3"/></w:pPr>
-  <w:rPr><w:i/><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr>
+  <w:rPr>{HEADING_FONTS}<w:i/><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr>
 </w:style>""",
     # styles tex2html.py targets by custom-style ----------------------------
     # Entry mirrors the PDF's \\cvtabw hang: wrapped lines line up half an inch
@@ -118,7 +121,7 @@ STYLES: dict[str, str] = {
 
 DOC_DEFAULTS = f"""<w:docDefaults>
   <w:rPrDefault><w:rPr>
-    <w:rFonts w:ascii="{FONT}" w:hAnsi="{FONT}" w:cs="{FONT}"
+    <w:rFonts w:ascii="{BODY_FONT}" w:hAnsi="{BODY_FONT}" w:cs="{BODY_FONT}"
               w:eastAsiaTheme="minorEastAsia"/>
     <w:sz w:val="21"/><w:szCs w:val="21"/>
     <w:lang w:val="en-US" w:eastAsia="zh-CN" w:bidi="ar-SA"/>

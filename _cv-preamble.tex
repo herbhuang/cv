@@ -29,90 +29,20 @@
   \errmessage{Unknown \string\cvmode; use full, short, or onepage}
 \fi\fi\fi
 
-% Encoding and fonts (pdflatex)
+% Encoding and production typography (pdflatex).
+%
+% Libertinus Serif carries the body. Alegreya Sans carries the name and all
+% three heading levels, using the family's native Bold and Medium Italic faces.
+% Keep these defaults explicit: both packages set NFSS family defaults while
+% loading, and package order should not silently change the finished CV.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-% ---------------------------------------------------------------------------
-% Typefaces. Two independent switches, both overridable from an entry file
-% before \input{_cv-preamble}:
-%   \def\cvfont{...}      body:     garamond | pagella | palatino | libertine
-%                                   | libertinus
-%   \def\cvheadfont{...}  headings: rm | heros | gillius | biolinum
-%                                   | libertinussans | ysabeau
-% `rm` puts the headings in the body serif, set bold. Packages load first and
-% \rmdefault/\sfdefault are pinned afterwards, because several of these claim
-% both families on load (libertine and libertinus set serif *and* sans).
-% Classico/URW Optima is not in TeX Live's repository; gillius (Gill Sans ADF)
-% is the nearest free humanist stand-in.
-% ---------------------------------------------------------------------------
-\ifx\cvfont\undefined\def\cvfont{libertinus}\fi
-\ifx\cvheadfont\undefined\def\cvheadfont{libertinussans}\fi
-
-\def\cvbodypagella{pagella}
-\def\cvbodypalatino{palatino}
-\def\cvbodylibertine{libertine}
-\def\cvbodylibertinus{libertinus}
-\ifx\cvfont\cvbodypagella
-  \usepackage{tgpagella}\def\cvrmfam{qpl}
-\else\ifx\cvfont\cvbodypalatino
-  \usepackage{mathpazo}\def\cvrmfam{ppl}
-\else\ifx\cvfont\cvbodylibertine
-  \usepackage{libertine}\def\cvrmfam{LinuxLibertineT-TLF}
-\else\ifx\cvfont\cvbodylibertinus
-  \usepackage{libertinus-type1}\def\cvrmfam{LibertinusSerif-TLF}
-\else
-  \usepackage{ebgaramond}\def\cvrmfam{EBGaramond-OsF}
-\fi\fi\fi\fi
-
-\def\cvheadrm{rm}
-\def\cvheadheros{heros}
-\def\cvheadgillius{gillius}
-\def\cvheadbiolinum{biolinum}
-\def\cvheadlibsans{libertinussans}
-\def\cvheadysabeau{ysabeau}
-\ifx\cvheadfont\cvheadheros
-  \usepackage{tgheros}\def\cvsffam{qhv}
-\else\ifx\cvheadfont\cvheadgillius
-  \usepackage{gillius}\def\cvsffam{GilliusADF-LF}
-\else\ifx\cvheadfont\cvheadbiolinum
-  % the libertine bundle already ships Biolinum; loading both clashes
-  \ifx\cvfont\cvbodylibertine\else\usepackage{biolinum}\fi
-  \def\cvsffam{LinuxBiolinumT-TLF}
-\else\ifx\cvheadfont\cvheadlibsans
-  \usepackage{libertinus-type1}\def\cvsffam{LibertinusSans-TLF}
-\else\ifx\cvheadfont\cvheadysabeau
-  \usepackage{ysabeau}\def\cvsffam{Ysabeau-TLF}
-\else
-  \def\cvsffam{\sfdefault}
-\fi\fi\fi\fi\fi
-
-\renewcommand*{\rmdefault}{\cvrmfam}
-\ifx\cvheadfont\cvheadrm
-  \newcommand{\cvheadfamily}{\rmfamily}
-  \newcommand{\cvheaddefault}{\rmdefault}
-\else
-  \renewcommand*{\sfdefault}{\cvsffam}
-  \newcommand{\cvheadfamily}{\sffamily}
-  \newcommand{\cvheaddefault}{\sfdefault}
-\fi
-
-% Semibold italic for level-3 headings, from a real face wherever one exists.
-% Ysabeau has one in the sans. Libertinus has one only in the SERIF: its sans
-% ships no semibold and no bold italic at all (see T1LibertinusSans-TLF.fd),
-% so level 3 steps down into the body face there -- which reads correctly as a
-% level below a sans level 2. Anything else strokes the regular outline.
-\ifx\cvheadfont\cvheadysabeau
-  \newcommand{\cvsemi}[1]{{\fontseries{sb}\selectfont #1}}
-\else\ifx\cvfont\cvbodylibertinus
-  \newcommand{\cvsemi}[1]{{\rmfamily\fontseries{sb}\selectfont #1}}
-\else
-  % No real semibold: stroke the regular outline. Loaded here rather than with
-  % the other packages so the default font pairing does not carry pdfrender.
-  \usepackage{pdfrender}
-  \newcommand{\melinewidth}{0.18pt}
-  \newcommand{\cvsemi}[1]{%
-    \textpdfrender{TextRenderingMode=FillStroke,LineWidth=\melinewidth}{#1}}
-\fi\fi
+\usepackage{libertinus-type1}
+\usepackage{AlegreyaSans}
+\renewcommand*{\rmdefault}{LibertinusSerif-TLF}
+\renewcommand*{\sfdefault}{AlegreyaSans-LF}
+\newcommand{\cvheadfamily}{\sffamily}
+\newcommand{\cvheaddefault}{\sfdefault}
 
 \usepackage[USenglish]{babel}
 \usepackage[babel=true]{microtype}
@@ -139,8 +69,7 @@
 \ifcvextended
   % full
   \newcommand{\listitemspace}{0.2\baselineskip}
-  \newcommand{\cvupdatedskip}{1.5em}
-  \geometry{left=1.0in, right=1.0in, top=1.0in, bottom=1.0in}
+  \geometry{left=1.0in, right=1.0in, top=1.0in, bottom=1.0in, footskip=24pt}
   \setstretch{1.0}
   \titlespacing{\section}{0pt}{24pt plus 4pt minus 4pt}{9pt plus 2pt minus 2pt}
   \titlespacing{\subsection}{0pt}{8pt plus 4pt minus 4pt}{4pt plus 2pt minus 2pt}
@@ -148,8 +77,7 @@
 \else\ifcvmedium
   % short (dense multi-section)
   \newcommand{\listitemspace}{0.04\baselineskip}
-  \newcommand{\cvupdatedskip}{1em}
-  \geometry{left=0.75in, right=0.75in, top=0.6in, bottom=0.6in}
+  \geometry{left=0.75in, right=0.75in, top=0.6in, bottom=0.6in, footskip=18pt}
   \setstretch{0.90}
   \titlespacing{\section}{0pt}{12pt plus 2pt minus 2pt}{5.5pt plus 1pt minus 1pt}
   \titlespacing{\subsection}{0pt}{5pt plus 2pt minus 2pt}{2pt plus 1pt minus 1pt}
@@ -157,17 +85,15 @@
 \else
   % onepage
   \newcommand{\listitemspace}{0.06\baselineskip}
-  \newcommand{\cvupdatedskip}{0.4em}
-  \geometry{left=0.5in, right=0.5in, top=0.4in, bottom=0.4in}
+  \geometry{left=0.5in, right=0.5in, top=0.4in, bottom=0.4in, footskip=14pt}
   \setstretch{0.88}
   \titlespacing{\section}{0pt}{5pt plus 1pt minus 1pt}{2.5pt plus 1pt minus 1pt}
   \titlespacing{\subsection}{0pt}{2.5pt plus 1pt minus 1pt}{1pt plus 0.5pt minus 0.5pt}
   \titlespacing{\subsubsection}{0pt}{2pt plus 1pt minus 1pt}{1pt plus 0.5pt minus 0.5pt}
-  \pagestyle{empty}   % a one-page document does not need to say it is page 1
 \fi\fi
 
 \makeatletter
-\newcommand{\namefont}[1]{{\normalfont\bfseries\Large
+\newcommand{\namefont}[1]{{\normalfont\cvheadfamily\bfseries\Large
   \fontsize{\dimexpr\f@size pt+1pt\relax}{\dimexpr\f@size pt+4pt\relax}%
   \selectfont #1}}
 \makeatother
@@ -187,12 +113,14 @@
   \titleline{%
     \makebox[0pt][l]{\hspace*{-\cvruleover}%
       \rule{\dimexpr\linewidth+2\cvruleover\relax}{0.4pt}}\hfil}}
+% Level 1: Alegreya Sans Bold, uppercase and tracked.
 \titleformat{\section}{\lsstyle\cvheadfamily\normalsize\bfseries\uppercase}{}{}{}%
   [{\cvsectionrule}]
+% Level 2: Alegreya Sans Bold, title case and lightly tracked.
 \titleformat{\subsection}{\lsstyle\cvheadfamily\normalsize\bfseries}{}{}{}{}
-% Level 3: same face, medium weight, italic -- audible under a bold level 2
-% without competing with it. Used for course audience and service groupings.
-\titleformat{\subsubsection}{\cvheadfamily\normalsize\itshape}{}{0pt}{\cvsemi}
+% Level 3: Alegreya Sans Medium Italic -- distinct without competing with L2.
+\titleformat{\subsubsection}%
+  {\cvheadfamily\normalsize\fontseries{sb}\itshape\selectfont}{}{0pt}{}
 
 \setlength\parindent{0em}
 
