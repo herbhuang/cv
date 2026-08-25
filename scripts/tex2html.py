@@ -450,10 +450,13 @@ def render(content: str, defs: dict[str, str], mode: str, today: _dt.date) -> st
 
 CSS = """\
 body { font-family: "EB Garamond", Garamond, Georgia, "Times New Roman", serif; }
-h1, h2, h3, h4 {
+h1 {
+  font-family: "EB Garamond", Garamond, Georgia, "Times New Roman", serif;
+  text-align: center;
+}
+h2, h3, h4 {
   font-family: "Alegreya Sans", "Trebuchet MS", Arial, sans-serif;
 }
-h1 { text-align: center; }
 h1, h2, h3 { font-weight: 700; }
 h4 { font-style: italic; font-weight: 500; }
 table { width: 100%; border-collapse: collapse; }

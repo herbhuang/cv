@@ -5,7 +5,7 @@
 
 Starts from `pandoc --print-default-data-file reference.docx` and replaces the
 handful of styles the CV uses, so the Word output echoes the PDF: EB Garamond
-body text, Alegreya Sans headings, tight leading, ruled section headings,
+body and name, Alegreya Sans section headings, tight leading, ruled section headings,
 borderless layout tables and black hyperlinks. Generated at build time rather
 than committed, so there is no binary in the repo to drift out of sync with
 pandoc.
@@ -24,6 +24,8 @@ from pathlib import Path
 
 BODY_FONT = "EB Garamond"
 HEADING_FONT = "Alegreya Sans"
+BODY_FONTS = (f'<w:rFonts w:ascii="{BODY_FONT}" w:hAnsi="{BODY_FONT}" '
+              f'w:cs="{BODY_FONT}"/>')
 HEADING_FONTS = (f'<w:rFonts w:ascii="{HEADING_FONT}" w:hAnsi="{HEADING_FONT}" '
                  f'w:cs="{HEADING_FONT}"/>')
 
@@ -49,13 +51,13 @@ STYLES: dict[str, str] = {
   <w:pPr><w:spacing w:before="0" w:after="0"/></w:pPr>
 </w:style>""",
     # headings --------------------------------------------------------------
-    # h1 is the name.
+    # h1 is the name, in the body serif.
     "Heading1": f"""
 <w:style w:type="paragraph" w:styleId="Heading1">
   <w:name w:val="heading 1"/><w:basedOn w:val="Normal"/>
   <w:pPr><w:jc w:val="center"/><w:spacing w:before="0" w:after="160"/>
     <w:outlineLvl w:val="0"/></w:pPr>
-  <w:rPr>{HEADING_FONTS}<w:b/><w:sz w:val="34"/><w:szCs w:val="34"/></w:rPr>
+  <w:rPr>{BODY_FONTS}<w:b/><w:sz w:val="34"/><w:szCs w:val="34"/></w:rPr>
 </w:style>""",
     # h2 is a CV section: caps, tracked, with the rule underneath.
     "Heading2": f"""

@@ -30,7 +30,7 @@ Do **not** duplicate CV text in the three entry files. They only set the mode an
 Density (font, margins, spacing) is controlled in `_cv-preamble.tex` from `\cvmode`.
 
 The production typography is intentionally fixed: **EB Garamond** for the
-body and **Alegreya Sans** for the name and all three heading levels. Level 1
+body and the name, **Alegreya Sans** for the three heading levels. Level 1
 and level 2 use Alegreya's native bold; level 3 uses its native medium italic.
 
 ## Build locally

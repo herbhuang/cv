@@ -31,9 +31,9 @@
 
 % Encoding and production typography (pdflatex).
 %
-% EB Garamond carries the body (tabular lining figures: years and dates sit
-% on the same baseline as the rest of the line). Alegreya Sans carries the
-% name and all three heading levels, using the family's native Bold and
+% EB Garamond carries the body and the name (tabular lining figures: years
+% and dates sit on the same baseline as the rest of the line). Alegreya Sans
+% carries the three heading levels, using the family's native Bold and
 % Medium Italic faces. Keep these defaults explicit: both packages set NFSS
 % family defaults while loading, and package order should not silently
 % change the finished CV.
@@ -95,7 +95,7 @@
 \fi\fi
 
 \makeatletter
-\newcommand{\namefont}[1]{{\normalfont\cvheadfamily\bfseries\Large
+\newcommand{\namefont}[1]{{\normalfont\rmfamily\bfseries\Large
   \fontsize{\dimexpr\f@size pt+1pt\relax}{\dimexpr\f@size pt+4pt\relax}%
   \selectfont #1}}
 \makeatother
