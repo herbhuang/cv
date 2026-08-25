@@ -4,8 +4,8 @@
     make-reference-docx.py -o dist/reference.docx
 
 Starts from `pandoc --print-default-data-file reference.docx` and replaces the
-handful of styles the CV uses, so the Word output echoes the PDF: Libertinus
-Serif body text, Alegreya Sans headings, tight leading, ruled section headings,
+handful of styles the CV uses, so the Word output echoes the PDF: EB Garamond
+body text, Alegreya Sans headings, tight leading, ruled section headings,
 borderless layout tables and black hyperlinks. Generated at build time rather
 than committed, so there is no binary in the repo to drift out of sync with
 pandoc.
@@ -22,7 +22,7 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-BODY_FONT = "Libertinus Serif"
+BODY_FONT = "EB Garamond"
 HEADING_FONT = "Alegreya Sans"
 HEADING_FONTS = (f'<w:rFonts w:ascii="{HEADING_FONT}" w:hAnsi="{HEADING_FONT}" '
                  f'w:cs="{HEADING_FONT}"/>')

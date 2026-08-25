@@ -29,7 +29,7 @@ Do **not** duplicate CV text in the three entry files. They only set the mode an
 
 Density (font, margins, spacing) is controlled in `_cv-preamble.tex` from `\cvmode`.
 
-The production typography is intentionally fixed: **Libertinus Serif** for the
+The production typography is intentionally fixed: **EB Garamond** for the
 body and **Alegreya Sans** for the name and all three heading levels. Level 1
 and level 2 use Alegreya's native bold; level 3 uses its native medium italic.
 
@@ -48,10 +48,12 @@ make clean
 
 Final files go to `output/pdf/` and `output/docx/`; temporary LaTeX, HTML, and
 reference-document files stay in `.build/`. Requires `pdflatex` with the
-`libertinus-type1` and `alegreya` packages (TeX Live / MacTeX) for PDFs, and
+`ebgaramond` and `alegreya` packages (TeX Live / MacTeX) for PDFs, and
 `pandoc` for Word versions. Neither target needs the other's toolchain.
 Overleaf: upload the repo and set the root file to one of the three entry
-`.tex` files; keep `_cv-*.tex` alongside them.
+`.tex` files; keep `_cv-*.tex` alongside them. Overleaf round-trips drop the
+executable bit on `scripts/`, so the Word job invokes those scripts with
+`bash` rather than `./`.
 
 ### How the Word export works
 

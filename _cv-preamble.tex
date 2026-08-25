@@ -31,15 +31,17 @@
 
 % Encoding and production typography (pdflatex).
 %
-% Libertinus Serif carries the body. Alegreya Sans carries the name and all
-% three heading levels, using the family's native Bold and Medium Italic faces.
-% Keep these defaults explicit: both packages set NFSS family defaults while
-% loading, and package order should not silently change the finished CV.
+% EB Garamond carries the body (tabular lining figures: years and dates sit
+% on the same baseline as the rest of the line). Alegreya Sans carries the
+% name and all three heading levels, using the family's native Bold and
+% Medium Italic faces. Keep these defaults explicit: both packages set NFSS
+% family defaults while loading, and package order should not silently
+% change the finished CV.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage{libertinus-type1}
+\usepackage[lining,tabular]{ebgaramond}
 \usepackage{AlegreyaSans}
-\renewcommand*{\rmdefault}{LibertinusSerif-TLF}
+\renewcommand*{\rmdefault}{EBGaramond-TLF}
 \renewcommand*{\sfdefault}{AlegreyaSans-LF}
 \newcommand{\cvheadfamily}{\sffamily}
 \newcommand{\cvheaddefault}{\sfdefault}

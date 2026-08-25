@@ -50,7 +50,7 @@ onepage: pdf_dirs
 
 # Word export shares _cv-content.tex with the PDFs; see scripts/build-docx.sh.
 docx: docx_dirs
-	PANDOC=$(PANDOC) DIST=$(DOCX_BUILD) ./scripts/build-docx.sh
+	PANDOC=$(PANDOC) DIST=$(DOCX_BUILD) bash scripts/build-docx.sh
 	cp $(DOCX_BUILD)/cv-hhuang.docx $(DOCX_OUTPUT)/cv-hhuang.docx
 	cp $(DOCX_BUILD)/cv-hhuang.short.docx $(DOCX_OUTPUT)/cv-hhuang.short.docx
 	cp $(DOCX_BUILD)/cv-hhuang.onepage.docx $(DOCX_OUTPUT)/cv-hhuang.onepage.docx

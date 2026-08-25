@@ -449,7 +449,7 @@ def render(content: str, defs: dict[str, str], mode: str, today: _dt.date) -> st
 
 
 CSS = """\
-body { font-family: "Libertinus Serif", "Palatino Linotype", Georgia, serif; }
+body { font-family: "EB Garamond", Garamond, Georgia, "Times New Roman", serif; }
 h1, h2, h3, h4 {
   font-family: "Alegreya Sans", "Trebuchet MS", Arial, sans-serif;
 }

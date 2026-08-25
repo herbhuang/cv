@@ -68,7 +68,9 @@ jobs:
           # pure function of the source.
           SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
           export SOURCE_DATE_EPOCH
-          DIST=dist/docx ./scripts/build-docx.sh
+          # Overleaf git syncs drop +x on scripts/; bash, not ./, so the
+          # Word job still runs after a merge from Overleaf.
+          DIST=dist/docx bash scripts/build-docx.sh
           rm -f dist/docx/reference.docx dist/docx/*.html
           ls -la dist/docx/
 
