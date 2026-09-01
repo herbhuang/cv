@@ -197,7 +197,7 @@ class Inline:
         "textit": "<em>{}</em>",
         "emph": "<em>{}</em>",
         "textbf": "<strong>{}</strong>",
-        "me": "<strong>{}</strong>",
+        "me": '<span custom-style="OwnName">{}</span>',
         "textsuperscript": "<sup>{}</sup>",
         "cvnote": "[{}]",
         "namefont": "{}",
@@ -459,6 +459,7 @@ h2, h3, h4 {
 }
 h1, h2, h3 { font-weight: 700; }
 h4 { font-style: italic; font-weight: 500; }
+span[custom-style="OwnName"] { font-weight: 500; }
 table { width: 100%; border-collapse: collapse; }
 td { vertical-align: top; border: none; }
 td[style*="right"] { text-align: right; }

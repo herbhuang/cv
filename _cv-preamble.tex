@@ -31,12 +31,12 @@
 
 % Encoding and production typography (pdflatex).
 %
-% EB Garamond carries the body and the name (tabular lining figures: years
-% and dates sit on the same baseline as the rest of the line). Alegreya Sans
-% carries the three heading levels, using the family's native Bold and
-% Medium Italic faces. Keep these defaults explicit: both packages set NFSS
-% family defaults while loading, and package order should not silently
-% change the finished CV.
+% EB Garamond carries the body, the title name, and own-name marks in
+% reference entries (tabular lining figures: years and dates sit on the
+% same baseline as the rest of the line). Alegreya Sans carries the three
+% heading levels, using the family's native Bold and Medium Italic faces.
+% Keep these defaults explicit: both packages set NFSS family defaults
+% while loading, and package order should not silently change the finished CV.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[lining,tabular]{ebgaramond}
@@ -98,10 +98,33 @@
 \newcommand{\namefont}[1]{{\normalfont\rmfamily\bfseries\Large
   \fontsize{\dimexpr\f@size pt+1pt\relax}{\dimexpr\f@size pt+4pt\relax}%
   \selectfont #1}}
+
+% First series in #1 that this family has at the current encoding/shape.
+% Native names first: both Alegreya Sans and EB Garamond ship `medium`;
+% `sb` is Alegreya's alias for that face (it has no SemiBold) and EB
+% Garamond's real SemiBold. The fd must already be loaded -- \sffamily /
+% \rmfamily / the document default all do that before we run.
+\newcommand{\cvfontseries}[1]{%
+  \def\cv@picked{}%
+  \@for\cv@s:=#1\do{%
+    \ifx\cv@picked\@empty
+      \expandafter\ifx
+        \csname\f@encoding/\f@family/\cv@s/\f@shape\endcsname\relax
+      \else
+        \edef\cv@picked{\cv@s}%
+      \fi
+    \fi}%
+  \ifx\cv@picked\@empty
+    \PackageWarning{cv}{No series in #1 for \f@family/\f@shape}%
+  \else
+    \expandafter\fontseries\expandafter{\cv@picked}%
+  \fi
+  \selectfont}
+
 \makeatother
 
-% Own-name emphasis in reference lists.
-\newcommand{\me}[1]{\textbf{#1}}
+% Own-name emphasis in reference lists: EB Garamond Medium, else SemiBold.
+\newcommand{\me}[1]{{\cvfontseries{medium,sb}#1}}
 
 \SetTracking{encoding=*, family=\cvheaddefault}{30}
 % Rule under level-1 headings, overhanging the measure by \cvruleover at each
@@ -121,8 +144,10 @@
 % Level 2: Alegreya Sans Bold, title case and lightly tracked.
 \titleformat{\subsection}{\lsstyle\cvheadfamily\normalsize\bfseries}{}{}{}{}
 % Level 3: Alegreya Sans Medium Italic -- distinct without competing with L2.
+% Request the native `medium` face; fall back to `sb` (which Alegreya aliases
+% to that same face) if a truncated install has no Medium Italic.
 \titleformat{\subsubsection}%
-  {\cvheadfamily\normalsize\fontseries{sb}\itshape\selectfont}{}{0pt}{}
+  {\cvheadfamily\normalsize\fontshape{\itdefault}\cvfontseries{medium,sb}}{}{0pt}{}
 
 \setlength\parindent{0em}
 

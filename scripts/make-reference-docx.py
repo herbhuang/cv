@@ -23,11 +23,19 @@ import zipfile
 from pathlib import Path
 
 BODY_FONT = "EB Garamond"
+BODY_MEDIUM_FONT = "EB Garamond Medium"
 HEADING_FONT = "Alegreya Sans"
+HEADING_MEDIUM_FONT = "Alegreya Sans Medium"
 BODY_FONTS = (f'<w:rFonts w:ascii="{BODY_FONT}" w:hAnsi="{BODY_FONT}" '
               f'w:cs="{BODY_FONT}"/>')
+BODY_MEDIUM_FONTS = (f'<w:rFonts w:ascii="{BODY_MEDIUM_FONT}" '
+                     f'w:hAnsi="{BODY_MEDIUM_FONT}" '
+                     f'w:cs="{BODY_MEDIUM_FONT}"/>')
 HEADING_FONTS = (f'<w:rFonts w:ascii="{HEADING_FONT}" w:hAnsi="{HEADING_FONT}" '
                  f'w:cs="{HEADING_FONT}"/>')
+HEADING_MEDIUM_FONTS = (f'<w:rFonts w:ascii="{HEADING_MEDIUM_FONT}" '
+                        f'w:hAnsi="{HEADING_MEDIUM_FONT}" '
+                        f'w:cs="{HEADING_MEDIUM_FONT}"/>')
 
 STYLES: dict[str, str] = {
     # body ------------------------------------------------------------------
@@ -80,7 +88,13 @@ STYLES: dict[str, str] = {
   <w:name w:val="heading 4"/><w:basedOn w:val="Normal"/>
   <w:pPr><w:keepNext/><w:spacing w:before="100" w:after="30"/>
     <w:outlineLvl w:val="3"/></w:pPr>
-  <w:rPr>{HEADING_FONTS}<w:i/><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr>
+  <w:rPr>{HEADING_MEDIUM_FONTS}<w:i/><w:sz w:val="21"/><w:szCs w:val="21"/></w:rPr>
+</w:style>""",
+    # own-name in reference entries: EB Garamond Medium, matching \\me
+    "OwnName": f"""
+<w:style w:type="character" w:styleId="OwnName">
+  <w:name w:val="OwnName"/>
+  <w:rPr>{BODY_MEDIUM_FONTS}</w:rPr>
 </w:style>""",
     # styles tex2html.py targets by custom-style ----------------------------
     # Entry mirrors the PDF's \\cvtabw hang: wrapped lines line up half an inch
