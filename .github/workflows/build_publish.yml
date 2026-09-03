@@ -27,11 +27,12 @@ jobs:
       - name: Build all CV PDFs
         uses: xu-cheng/latex-action@v4
         with:
-          # latexmk multi-pass; three entry points share _cv-content.tex
+          # latexmk multi-pass; entry points share _cv-content.tex
           root_file: |
             cv-hhuang.tex
             cv-hhuang.short.tex
             cv-hhuang-onepage.tex
+            cv-hhuang.hyperlegible.tex
 
       - name: Stage PDFs for R2
         run: |
@@ -39,6 +40,7 @@ jobs:
           cp cv-hhuang.pdf dist/pdf/cv-hhuang.pdf
           cp cv-hhuang.short.pdf dist/pdf/cv-hhuang.short.pdf
           cp cv-hhuang-onepage.pdf dist/pdf/cv-hhuang.onepage.pdf
+          cp cv-hhuang.hyperlegible.pdf dist/pdf/cv-hhuang.hyperlegible.pdf
           ls -la dist/pdf/
 
       - name: Install pandoc

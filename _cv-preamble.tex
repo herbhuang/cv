@@ -1,5 +1,6 @@
 % Shared preamble for He (Herb) Huang CV.
 % Entry files must set \cvmode to full, short, or onepage before \input{this}.
+% Optional \cvfont: garamond (default) or hyperlegible.
 % Do not compile this file directly.
 
 \RequirePackage[l2tabu,orthodox]{nag}
@@ -11,7 +12,7 @@
 \newif\ifcvmedium
 \newif\ifcvextended
 \ifx\cvmode\undefined
-  \errmessage{CV mode not set. Compile cv-hhuang.tex, cv-hhuang.short.tex, or cv-hhuang-onepage.tex}
+  \errmessage{CV mode not set. Compile cv-hhuang.tex, cv-hhuang.hyperlegible.tex, cv-hhuang.short.tex, or cv-hhuang-onepage.tex}
 \fi
 \def\cvmodecheckfull{full}
 \def\cvmodecheckshort{short}
@@ -29,20 +30,47 @@
   \errmessage{Unknown \string\cvmode; use full, short, or onepage}
 \fi\fi\fi
 
+% Font theme. Unset means garamond, so the three length-entry files stay
+% unchanged. hyperlegible is a parallel full CV, not a fourth density mode.
+\ifx\cvfont\undefined
+  \def\cvfont{garamond}
+\fi
+\newif\ifcvhyperlegible
+\def\cvfontcheckgaramond{garamond}
+\def\cvfontcheckhyperlegible{hyperlegible}
+\ifx\cvfont\cvfontcheckhyperlegible
+  \cvhyperlegibletrue
+\else\ifx\cvfont\cvfontcheckgaramond
+  \cvhyperlegiblefalse
+\else
+  \errmessage{Unknown \string\cvfont; use garamond or hyperlegible}
+\fi\fi
+
 % Encoding and production typography (pdflatex).
 %
-% EB Garamond carries the body, the title name, and own-name marks in
-% reference entries (tabular lining figures: years and dates sit on the
+% garamond: EB Garamond carries the body, the title name, and own-name marks
+% in reference entries (tabular lining figures: years and dates sit on the
 % same baseline as the rest of the line). Alegreya Sans carries the three
 % heading levels, using the family's native Bold and Medium Italic faces.
 % Keep these defaults explicit: both packages set NFSS family defaults
 % while loading, and package order should not silently change the finished CV.
+%
+% hyperlegible: Atkinson Hyperlegible Next for body, name, headings, and
+% own-name marks. `t` is the atkinson package's tabular-lining option (not
+% `tabular`). Pin both roman and sans to that family so \namefont's \rmfamily
+% cannot fall back to Computer Modern. Needs the atkinson package dated
+% 2025-03-14 or later, which is the Next family; TeX Live 2025+ on Overleaf.
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
-\usepackage[lining,tabular]{ebgaramond}
-\usepackage{AlegreyaSans}
-\renewcommand*{\rmdefault}{EBGaramond-TLF}
-\renewcommand*{\sfdefault}{AlegreyaSans-LF}
+\ifcvhyperlegible
+  \usepackage[sfdefault,t]{atkinson}
+  \edef\rmdefault{\sfdefault}
+\else
+  \usepackage[lining,tabular]{ebgaramond}
+  \usepackage{AlegreyaSans}
+  \renewcommand*{\rmdefault}{EBGaramond-TLF}
+  \renewcommand*{\sfdefault}{AlegreyaSans-LF}
+\fi
 \newcommand{\cvheadfamily}{\sffamily}
 \newcommand{\cvheaddefault}{\sfdefault}
 
@@ -100,10 +128,11 @@
   \selectfont #1}}
 
 % First series in #1 that this family has at the current encoding/shape.
-% Native names first: both Alegreya Sans and EB Garamond ship `medium`;
-% `sb` is Alegreya's alias for that face (it has no SemiBold) and EB
-% Garamond's real SemiBold. The fd must already be loaded -- \sffamily /
-% \rmfamily / the document default all do that before we run.
+% Native names first: Alegreya Sans, EB Garamond, and Atkinson Hyperlegible
+% Next all ship `medium`; `sb` is Alegreya's alias for that face (it has no
+% SemiBold) and the real SemiBold in the other two. The fd must already be
+% loaded -- \sffamily / \rmfamily / the document default all do that before
+% we run.
 \newcommand{\cvfontseries}[1]{%
   \def\cv@picked{}%
   \@for\cv@s:=#1\do{%
@@ -123,7 +152,7 @@
 
 \makeatother
 
-% Own-name emphasis in reference lists: EB Garamond Medium, else SemiBold.
+% Own-name emphasis in reference lists: the body family's Medium, else SemiBold.
 \newcommand{\me}[1]{{\cvfontseries{medium,sb}#1}}
 
 \SetTracking{encoding=*, family=\cvheaddefault}{30}
@@ -138,14 +167,14 @@
   \titleline{%
     \makebox[0pt][l]{\hspace*{-\cvruleover}%
       \rule{\dimexpr\linewidth+2\cvruleover\relax}{0.4pt}}\hfil}}
-% Level 1: Alegreya Sans Bold, uppercase and tracked.
+% Level 1: heading family Bold, uppercase and tracked.
 \titleformat{\section}{\lsstyle\cvheadfamily\normalsize\bfseries\uppercase}{}{}{}%
   [{\cvsectionrule}]
-% Level 2: Alegreya Sans Bold, title case and lightly tracked.
+% Level 2: heading family Bold, title case and lightly tracked.
 \titleformat{\subsection}{\lsstyle\cvheadfamily\normalsize\bfseries}{}{}{}{}
-% Level 3: Alegreya Sans Medium Italic -- distinct without competing with L2.
-% Request the native `medium` face; fall back to `sb` (which Alegreya aliases
-% to that same face) if a truncated install has no Medium Italic.
+% Level 3: heading family Medium Italic -- distinct without competing with L2.
+% Request the native `medium` face; fall back to `sb` if Medium Italic is
+% missing (Alegreya aliases `sb` to that same face).
 \titleformat{\subsubsection}%
   {\cvheadfamily\normalsize\fontshape{\itdefault}\cvfontseries{medium,sb}}{}{0pt}{}
 

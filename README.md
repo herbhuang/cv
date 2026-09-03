@@ -2,17 +2,18 @@
 
 LaTeX academic CV (adapted from [Geoff Boeing’s template](https://github.com/gboeing/cv)).
 
-## Edit once, three formats
+## Edit once, four PDF entry files
 
 | Role | File |
 |------|------|
 | **Edit this** (all facts, pubs, dates) | [`_cv-content.tex`](_cv-content.tex) |
 | Shared typography / layout / density | [`_cv-preamble.tex`](_cv-preamble.tex) |
 | Full CV entry | [`cv-hhuang.tex`](cv-hhuang.tex) (`\cvmode{full}`) |
+| Full CV, Atkinson Hyperlegible Next | [`cv-hhuang.hyperlegible.tex`](cv-hhuang.hyperlegible.tex) (`\cvmode{full}`, `\cvfont{hyperlegible}`) |
 | Short dense CV entry | [`cv-hhuang.short.tex`](cv-hhuang.short.tex) (`\cvmode{short}`) |
 | One-page CV entry | [`cv-hhuang-onepage.tex`](cv-hhuang-onepage.tex) (`\cvmode{onepage}`) |
 
-Do **not** duplicate CV text in the three entry files. They only set the mode and pull shared content.
+Do **not** duplicate CV text in the entry files. They only set the mode (and, for the hyperlegible full CV, the font theme) and pull shared content.
 
 ### What each mode includes
 
@@ -27,32 +28,42 @@ Do **not** duplicate CV text in the three entry files. They only set the mode an
 | Professional development, service | ✓ | | |
 | References | ✓ | | |
 
-Density (font, margins, spacing) is controlled in `_cv-preamble.tex` from `\cvmode`.
+Density (margins, spacing) is controlled in `_cv-preamble.tex` from `\cvmode`. Font theme is `\cvfont`.
 
-The production typography is intentionally fixed: **EB Garamond** for the
-body and the title name, **Alegreya Sans** for the three heading levels.
-Level 1 and level 2 use Alegreya's native bold; level 3 uses its native
-medium italic (semi-bold italic if medium is missing). Own-name marks in
-reference entries use EB Garamond medium, or semi-bold if medium is missing.
+The default production typography is **EB Garamond** for the body and the
+title name, **Alegreya Sans** for the three heading levels. Level 1 and
+level 2 use Alegreya's native bold; level 3 uses its native medium italic
+(semi-bold italic if medium is missing). Own-name marks in reference
+entries use EB Garamond medium, or semi-bold if medium is missing.
+
+`cv-hhuang.hyperlegible.tex` is a parallel full CV that sets every face —
+body, name, headings, own-name marks — to **Atkinson Hyperlegible Next**
+(the `atkinson` package, TeX Live 2025 or later). Same content and density
+as the Garamond full CV; only the typeface changes. On Overleaf, pick that
+file as the root and set the TeX Live version to 2025 or 2026. After a push
+to `main` it is published at
+`https://assets.huanghe.phd/pdf/cv-hhuang.hyperlegible.pdf`.
 
 ## Build locally
 
 ```bash
 make            # PDFs + Word versions of all three lengths
-make pdf        # PDFs only
+make pdf        # PDFs only (three lengths + hyperlegible full)
 make docx       # Word versions only
 make full       # full CV PDF only
 make short
 make onepage
+make hyperlegible # full CV PDF in Atkinson Hyperlegible Next
 make clean-build # remove intermediates but keep final files
 make clean
 ```
 
 Final files go to `output/pdf/` and `output/docx/`; temporary LaTeX, HTML, and
 reference-document files stay in `.build/`. Requires `pdflatex` with the
-`ebgaramond` and `alegreya` packages (TeX Live / MacTeX) for PDFs, and
-`pandoc` for Word versions. Neither target needs the other's toolchain.
-Overleaf: upload the repo and set the root file to one of the three entry
+`ebgaramond` and `alegreya` packages (TeX Live / MacTeX) for PDFs, plus
+`atkinson` (TeX Live 2025+) for the hyperlegible full CV, and `pandoc` for
+Word versions. Neither target needs the other's toolchain.
+Overleaf: upload the repo and set the root file to one of the entry
 `.tex` files; keep `_cv-*.tex` alongside them. Overleaf round-trips drop the
 executable bit on `scripts/`, so the Word job invokes those scripts with
 `bash` rather than `./`.
@@ -86,12 +97,13 @@ the PDF's right-aligned dates and stays editable.
 
 Compiled PDFs and Word files are **not** stored in git. On every push to `main`, GitHub Actions:
 
-1. Builds all three PDFs and all three Word versions from the shared source
+1. Builds all four PDFs and all three Word versions from the shared source
 2. Uploads them to Cloudflare R2:
-   - `pdf/cv-hhuang.pdf`, `pdf/cv-hhuang.short.pdf`, `pdf/cv-hhuang.onepage.pdf`
+   - `pdf/cv-hhuang.pdf`, `pdf/cv-hhuang.short.pdf`, `pdf/cv-hhuang.onepage.pdf`,
+     `pdf/cv-hhuang.hyperlegible.pdf`
    - `docx/cv-hhuang.docx`, `docx/cv-hhuang.short.docx`,
      `docx/cv-hhuang.onepage.docx`
-3. Purges those six URLs from Cloudflare's edge cache so the new files are
+3. Purges those URLs from Cloudflare's edge cache so the new files are
    served immediately from `https://assets.huanghe.phd`
 4. Verifies the upload by downloading each file back with a cache-busting
    query string and comparing bytes. That asks the origin, not the edge: the
@@ -119,6 +131,6 @@ visitor's browser has already cached locally.
 ## Workflow tips
 
 1. Change a paper status or title in **`_cv-content.tex` only**.
-2. Run `make` (or push to `main`) so all three lengths update together, in both formats.
+2. Run `make` (or push to `main`) so all lengths update together. The hyperlegible full CV is PDF-only.
 3. To show/hide a section in a mode, wrap it with `\ifcvmedium` / `\ifcvextended` (see comments at the top of `_cv-content.tex`).
 4. To tweak how dense short/one-page look, edit the density block in `_cv-preamble.tex`.
