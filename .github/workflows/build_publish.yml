@@ -32,7 +32,7 @@ jobs:
             cv-hhuang.tex
             cv-hhuang.short.tex
             cv-hhuang-onepage.tex
-            cv-hhuang.hyperlegible.tex
+            cv-hhuang.legible.tex
 
       - name: Stage PDFs for R2
         run: |
@@ -40,7 +40,7 @@ jobs:
           cp cv-hhuang.pdf dist/pdf/cv-hhuang.pdf
           cp cv-hhuang.short.pdf dist/pdf/cv-hhuang.short.pdf
           cp cv-hhuang-onepage.pdf dist/pdf/cv-hhuang.onepage.pdf
-          cp cv-hhuang.hyperlegible.pdf dist/pdf/cv-hhuang.hyperlegible.pdf
+          cp cv-hhuang.legible.pdf dist/pdf/cv-hhuang.legible.pdf
           ls -la dist/pdf/
 
       - name: Install pandoc

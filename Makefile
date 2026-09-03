@@ -2,12 +2,12 @@
 # Source of truth for content: _cv-content.tex
 # Usage:
 #   make            # PDFs + Word versions of all three lengths
-#   make pdf        # PDFs only (three lengths + hyperlegible full)
+#   make pdf        # PDFs only (three lengths + legible full)
 #   make docx       # Word versions only (needs pandoc; no LaTeX required)
 #   make full       # full CV PDF only
 #   make short      # short CV PDF only
 #   make onepage    # one-page CV PDF only
-#   make hyperlegible # full CV PDF in Atkinson Hyperlegible Next
+#   make legible    # full CV PDF in Atkinson Hyperlegible Next
 #   make clean-build # remove intermediates but keep final files
 #   make clean      # remove generated artifacts and intermediates
 
@@ -21,11 +21,11 @@ DOCX_OUTPUT = $(OUTPUT)/docx
 PDF_BUILD = $(BUILD)/pdf
 DOCX_BUILD = $(BUILD)/docx
 
-.PHONY: all pdf docx full short onepage hyperlegible clean-build clean pdf_dirs docx_dirs
+.PHONY: all pdf docx full short onepage legible clean-build clean pdf_dirs docx_dirs
 
 all: pdf docx
 
-pdf: full short onepage hyperlegible
+pdf: full short onepage legible
 
 pdf_dirs:
 	@mkdir -p $(PDF_BUILD) $(PDF_OUTPUT)
@@ -49,8 +49,8 @@ short: pdf_dirs
 onepage: pdf_dirs
 	$(call compile_two_pass,cv-hhuang.onepage,cv-hhuang-onepage.tex)
 
-hyperlegible: pdf_dirs
-	$(call compile_two_pass,cv-hhuang.hyperlegible,cv-hhuang.hyperlegible.tex)
+legible: pdf_dirs
+	$(call compile_two_pass,cv-hhuang.legible,cv-hhuang.legible.tex)
 
 # Word export shares _cv-content.tex with the PDFs; see scripts/build-docx.sh.
 docx: docx_dirs
