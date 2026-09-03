@@ -34,7 +34,7 @@ The default production typography is **EB Garamond** for the body and the
 title name, **Alegreya Sans** for the three heading levels. Level 1 and
 level 2 use Alegreya's native bold; level 3 uses its native medium italic
 (semi-bold italic if medium is missing). Own-name marks in reference
-entries use EB Garamond medium, or semi-bold if medium is missing.
+entries use EB Garamond semi-bold, or medium if semi-bold is missing.
 
 `cv-hhuang.hyperlegible.tex` is a parallel full CV that sets every face —
 body, name, headings, own-name marks — to **Atkinson Hyperlegible Next**
